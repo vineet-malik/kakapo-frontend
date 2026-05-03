@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="config.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -46,10 +45,111 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
       padding-bottom: 28px;
       border-bottom: 1px solid var(--border);
       margin-bottom: 28px;
     }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px;
+    }
+    .tab {
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+      background: var(--border);
+      color: var(--text);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+    }
+    .btn:hover { color: var(--text); border-color: var(--text-dimmer); }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a0a;
+    }
+    .btn-primary:hover { filter: brightness(1.05); color: #0a0a0a; }
+    .btn-sm { padding: 6px 10px; font-size: 11px; }
+    .keys-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .keys-toolbar h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .key-reveal {
+      margin-top: 20px;
+      padding: 16px 18px;
+      border-radius: 8px;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.08);
+      display: none;
+    }
+    .key-reveal.show { display: block; }
+    .key-reveal-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .key-reveal-value {
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      word-break: break-all;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .keys-msg {
+      font-size: 13px;
+      color: var(--text-dimmer);
+      margin-bottom: 12px;
+    }
+    .keys-msg.err { color: var(--danger); }
     .brand {
       font-size: 15px;
       font-weight: 600;
@@ -126,37 +226,7 @@
     }
     .tile.spent .tile-value { color: var(--muted); }
 
-    /* ========== Chart ========== */
-    .chart-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 22px 22px 18px;
-      margin-bottom: 24px;
-    }
-    .chart-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 14px;
-    }
-    .chart-title {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: -0.005em;
-      color: var(--text);
-    }
-    .chart-sub {
-      font-size: 11px;
-      color: var(--text-dimmer);
-      letter-spacing: 0.04em;
-    }
-    .chart-wrap {
-      height: 300px;
-      position: relative;
-    }
-
-    /* ========== Recent Activity ========== */
+    /* ========== Cards / tables (keys tab) ========== */
     .activity-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -216,42 +286,6 @@
     .activity-scroll tr:last-child td { border-bottom: none; }
     .activity-scroll td.time { color: var(--text-dimmer); font-variant-numeric: tabular-nums; width: 80px; }
     .activity-scroll td.model { color: var(--text-dim); font-size: 12px; min-width: 140px; max-width: 200px; }
-    .activity-scroll td.prompt {
-      color: var(--text);
-      min-width: 200px;
-      max-width: 420px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .activity-scroll td.cache { width: 80px; white-space: nowrap; }
-    .activity-scroll td.tokens-saved {
-      text-align: right;
-      min-width: 110px;
-      font-variant-numeric: tabular-nums;
-      color: var(--text-dim);
-      white-space: nowrap;
-    }
-    .activity-scroll td.saved {
-      text-align: right;
-      min-width: 100px;
-      font-variant-numeric: tabular-nums;
-      color: var(--accent);
-      white-space: nowrap;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 9px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      border-radius: 4px;
-      text-transform: uppercase;
-      font-variant: small-caps;
-    }
-    .badge-hit  { background: rgba(16, 185, 129, 0.12); color: var(--accent); border: 1px solid rgba(16, 185, 129, 0.2); }
-    .badge-miss { background: rgba(100, 116, 139, 0.1); color: var(--muted);  border: 1px solid rgba(100, 116, 139, 0.18); }
 
     .empty {
       padding: 32px 22px;
@@ -260,173 +294,228 @@
       font-size: 12px;
     }
 
-    @keyframes fadeInRow {
-      from { opacity: 0; transform: translateY(-6px); background: rgba(16, 185, 129, 0.04); }
-      to   { opacity: 1; transform: translateY(0);    background: transparent; }
-    }
-    .row-new { animation: fadeInRow 500ms ease-out; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="topbar">
-      <div class="brand">Kakapo</div>
-      <div class="status" id="status">
-        <span class="status-dot"></span>
-        <span id="status-text">LIVE</span>
+      <div class="topbar-left">
+        <div class="brand">Kakapo</div>
+        <nav class="tabs" role="tablist" aria-label="Dashboard sections">
+          <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="analyse">Analyse</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-tab="keys">Key management</button>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="status" id="status">
+          <span class="status-dot"></span>
+          <span id="status-text">LIVE</span>
+        </div>
+        <button type="button" class="btn btn-sm" id="sign-out">Sign out</button>
       </div>
     </div>
 
-    <div class="activity-card" style="margin-bottom: 24px;">
-      <div class="activity-head"><div class="activity-title">Recent activity</div></div>
-      <div class="activity-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>Model</th>
-              <th>Prompt</th>
-              <th>Cache</th>
-              <th style="text-align:right">Tokens saved</th>
-              <th style="text-align:right">Saved</th>
-            </tr>
-          </thead>
-          <tbody id="activity">
-            <tr><td colspan="6" class="empty">Waiting for first request…</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
+    <section id="panel-analyse" class="tab-panel active" role="tabpanel" aria-hidden="false">
     <div class="stats">
       <div class="tile hero">
-        <div class="tile-label">Total Saved Today</div>
+        <div class="tile-label">Total saved this month</div>
         <div class="tile-value" id="val-saved">$0.00</div>
       </div>
       <div class="tile spent">
-        <div class="tile-label">Total Spent Today</div>
+        <div class="tile-label">Total spent this month</div>
         <div class="tile-value" id="val-spent">$0.00</div>
       </div>
       <div class="tile">
-        <div class="tile-label">Cache Hit Rate</div>
+        <div class="tile-label">Cache hit rate (MTD)</div>
         <div class="tile-value" id="val-rate">0.0%</div>
       </div>
       <div class="tile">
-        <div class="tile-label">Requests Handled</div>
+        <div class="tile-label">Requests this month</div>
         <div class="tile-value" id="val-requests">0</div>
       </div>
     </div>
+    </section>
 
-    <div class="chart-card">
-      <div class="chart-head">
-        <div class="chart-title">Cumulative savings</div>
-        <div class="chart-sub">last 60 min</div>
+    <section id="panel-keys" class="tab-panel" role="tabpanel" aria-hidden="true">
+      <div class="keys-toolbar">
+        <h2>API keys</h2>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-generate-key">Generate key</button>
       </div>
-      <div class="chart-wrap"><canvas id="chart"></canvas></div>
-    </div>
+      <p class="keys-msg" id="keys-msg"></p>
+      <div class="activity-card">
+        <div class="activity-head"><div class="activity-title">Your keys</div></div>
+        <div class="activity-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Label</th>
+                <th>Prefix</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="keys-tbody">
+              <tr><td colspan="3" class="empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="key-reveal" id="key-reveal">
+        <div class="key-reveal-label">Copy this key now</div>
+        <div class="key-reveal-value" id="key-reveal-value"></div>
+        <button type="button" class="btn btn-primary btn-sm" id="key-reveal-copy">Copy</button>
+      </div>
+    </section>
   </div>
 
   <script>
+  (function () {
+    var TOKEN_KEY = 'kakapo_auth_token';
+    if (!localStorage.getItem(TOKEN_KEY)) {
+      window.location.replace('login.html?next=dashboard.html');
+      return;
+    }
+    function getAuthHeaders() {
+      var t = localStorage.getItem(TOKEN_KEY);
+      return t ? { Authorization: 'Bearer ' + t } : {};
+    }
+    function clearAuthAndRedirect() {
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.replace('login.html?next=dashboard.html');
+    }
+    async function authFetch(url, opts) {
+      opts = opts || {};
+      var headers = Object.assign({}, getAuthHeaders(), opts.headers || {});
+      if (opts.body && typeof opts.body === 'string' && !headers['Content-Type']) {
+        headers['Content-Type'] = 'application/json';
+      }
+      if (opts.body instanceof FormData) delete headers['Content-Type'];
+      var res = await fetch(url, Object.assign({}, opts, { headers: headers }));
+      if (res.status === 401 || res.status === 403) clearAuthAndRedirect();
+      return res;
+    }
+
+    document.getElementById('sign-out').addEventListener('click', function () {
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = 'login.html';
+    });
+
+    var tabBtns = document.querySelectorAll('.tab');
+    var panelAnalyse = document.getElementById('panel-analyse');
+    var panelKeys = document.getElementById('panel-keys');
+    tabBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-tab');
+        tabBtns.forEach(function (b) {
+          b.classList.toggle('active', b === btn);
+          b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+        });
+        panelAnalyse.classList.toggle('active', id === 'analyse');
+        panelKeys.classList.toggle('active', id === 'keys');
+        panelAnalyse.setAttribute('aria-hidden', id === 'analyse' ? 'false' : 'true');
+        panelKeys.setAttribute('aria-hidden', id === 'keys' ? 'false' : 'true');
+        if (id === 'keys') loadKeys();
+      });
+    });
+
+    var keysTbody = document.getElementById('keys-tbody');
+    var keysMsg = document.getElementById('keys-msg');
+    var keyReveal = document.getElementById('key-reveal');
+    var keyRevealValue = document.getElementById('key-reveal-value');
+
+    function setKeysMsg(text, isErr) {
+      keysMsg.textContent = text || '';
+      keysMsg.classList.toggle('err', !!isErr);
+    }
+
+    async function loadKeys() {
+      setKeysMsg('');
+      keysTbody.innerHTML = '<tr><td colspan="3" class="empty">Loading…</td></tr>';
+      try {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/keys', { method: 'GET', headers: {} });
+        if (!res.ok) throw new Error('bad status ' + res.status);
+        var data = await res.json();
+        var list = Array.isArray(data) ? data : (data.keys || data.items || []);
+        if (!list.length) {
+          keysTbody.innerHTML = '<tr><td colspan="3" class="empty">No keys yet. Generate one to use the API.</td></tr>';
+          return;
+        }
+        keysTbody.innerHTML = list.map(function (k) {
+          var label = (k.label || k.name || '—').replace(/</g, '&lt;');
+          var prefix = (k.prefix || k.key_prefix || (k.id ? String(k.id).slice(0, 8) + '…' : '—')).replace(/</g, '&lt;');
+          var created = k.created_at ? new Date(k.created_at).toLocaleString() : (k.created || '—');
+          return '<tr><td>' + label + '</td><td class="model">' + prefix + '</td><td class="time">' + created + '</td></tr>';
+        }).join('');
+      } catch (e) {
+        keysTbody.innerHTML = '<tr><td colspan="3" class="empty">Could not load keys.</td></tr>';
+        setKeysMsg(e.message || 'Failed to load keys', true);
+      }
+    }
+
+    document.getElementById('btn-generate-key').addEventListener('click', async function () {
+      setKeysMsg('');
+      keyReveal.classList.remove('show');
+      try {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/keys', {
+          method: 'POST',
+          headers: {},
+          body: JSON.stringify({}),
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (!res.ok) {
+          setKeysMsg(data.detail || data.message || ('Could not create key (' + res.status + ')'), true);
+          return;
+        }
+        var secret = data.key || data.api_key || data.token || data.secret;
+        if (secret) {
+          keyRevealValue.textContent = secret;
+          keyReveal.classList.add('show');
+        }
+        await loadKeys();
+      } catch (e) {
+        setKeysMsg(e.message || 'Network error', true);
+      }
+    });
+
+    document.getElementById('key-reveal-copy').addEventListener('click', function () {
+      var t = keyRevealValue.textContent;
+      if (!t) return;
+      navigator.clipboard.writeText(t).then(function () {
+        setKeysMsg('Copied to clipboard.', false);
+      }).catch(function () {
+        setKeysMsg('Copy failed — select the key and copy manually.', true);
+      });
+    });
+
     // =====================================================================
-    // MOCK /api/stats — intercept fetch so real app code stays unchanged.
-    // When backend is ready, remove this block or flip MOCK = false.
+    // MOCK /api/dashboard — set MOCK = true for local UI without backend.
     // =====================================================================
     const MOCK = false;
-
-    const mockPrompts = [
-      'Write a Python function to parse CSV files with error handling',
-      'Explain the difference between async and sync in JavaScript',
-      'How do I deploy a FastAPI app to production with Docker',
-      'Show me an example of a React hook for debouncing input',
-      "What's the best way to handle CORS in Express",
-      'Implement a binary search tree in TypeScript with generics',
-      'How does JWT authentication actually work end to end',
-      'Rewrite this SQL query using window functions instead of subqueries',
-      'Kubernetes liveness vs readiness probes — when to use which',
-      'Explain eventual consistency to a frontend engineer',
-      'Generate a regex to match RFC 5321 email addresses',
-      'Refactor this callback pyramid into async/await',
-      'Write a Dockerfile for a Rust service with cargo-chef caching',
-      'Why is my React component re-rendering every keystroke',
-      'Diff between UUIDv4 and UUIDv7 and when to pick each',
-    ];
-
-    const mockModels = ['gemini-2.0-flash', 'gemini-2.0-flash', 'gemini-2.0-flash', 'gemini-2.5-pro'];
-
-    const mockState = (() => {
-      const now = Date.now();
-      const timeline = [];
-      for (let i = 59; i >= 0; i--) {
-        timeline.push({ ts: new Date(now - i * 60000).toISOString(), cumulative_saved: 0 });
-      }
-      return {
-        total_spent_usd: 0,
-        total_saved_usd: 0,
-        total_requests: 0,
-        cache_hits: 0,
-        timeline,
-        recent: [],
-        lastShift: now,
-      };
-    })();
-
-    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
+    const mockState = { total_spent_usd: 0, total_saved_usd: 0, total_requests: 0, cache_hits: 0 };
     function generateMockStats() {
-      const newCount = 1 + Math.floor(Math.random() * 3);
-
+      const newCount = 1 + Math.floor(Math.random() * 2);
       for (let i = 0; i < newCount; i++) {
         const isHit = Math.random() < 0.38;
-        const status = isHit ? (Math.random() < 0.55 ? 'exact' : 'semantic') : 'miss';
         const tokens_in = 80 + Math.floor(Math.random() * 1600);
         const tokens_out = 40 + Math.floor(Math.random() * 420);
         const counterfactual = (tokens_in / 1e6) * 2.5 + (tokens_out / 1e6) * 10.0;
-        const cost = 0; // gemini free tier
+        const cost = 0;
         const saved = isHit ? counterfactual : counterfactual - cost;
-
         mockState.total_requests += 1;
         if (isHit) mockState.cache_hits += 1;
         mockState.total_spent_usd += cost;
         mockState.total_saved_usd += saved;
-
-        mockState.recent.unshift({
-          ts: new Date().toISOString(),
-          model: pick(mockModels),
-          cache_status: status,
-          tokens_in,
-          tokens_out,
-          saved_usd: saved,
-          prompt_preview: pick(mockPrompts).slice(0, 60),
-        });
       }
-      if (mockState.recent.length > 20) mockState.recent.length = 20;
-
-      // Timeline: shift once per minute, otherwise update the last bucket
-      const now = Date.now();
-      if (now - mockState.lastShift > 60000) {
-        mockState.timeline.shift();
-        mockState.timeline.push({ ts: new Date(now).toISOString(), cumulative_saved: mockState.total_saved_usd });
-        mockState.lastShift = now;
-      } else {
-        const last = mockState.timeline[mockState.timeline.length - 1];
-        last.ts = new Date(now).toISOString();
-        last.cumulative_saved = mockState.total_saved_usd;
-      }
-
       return {
         total_spent_usd: mockState.total_spent_usd,
         total_saved_usd: mockState.total_saved_usd,
         cache_hit_rate: mockState.total_requests > 0 ? mockState.cache_hits / mockState.total_requests : 0,
         total_requests: mockState.total_requests,
-        timeline: mockState.timeline.slice(),
-        recent_requests: mockState.recent.slice(0, 20),
       };
     }
-
     if (MOCK) {
       const realFetch = window.fetch.bind(window);
       window.fetch = function (url, ...rest) {
-        if (typeof url === 'string' && url.indexOf('/api/stats') !== -1) {
+        if (typeof url === 'string' && url.indexOf('/api/dashboard') !== -1) {
           return new Promise((res) =>
             setTimeout(() => res({ ok: true, json: () => Promise.resolve(generateMockStats()) }), 40)
           );
@@ -474,136 +563,6 @@
     };
 
     // =====================================================================
-    // Chart
-    // =====================================================================
-    const canvas = document.getElementById('chart');
-    const ctx = canvas.getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.25)');
-    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.00)');
-
-    const chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: Array(60).fill(''),
-        datasets: [{
-          data: Array(60).fill(0),
-          borderColor: '#10b981',
-          backgroundColor: gradient,
-          borderWidth: 2,
-          fill: true,
-          tension: 0.35,
-          pointRadius: 0,
-          pointHoverRadius: 4,
-          pointHoverBackgroundColor: '#10b981',
-          pointHoverBorderColor: '#0a0a0a',
-          pointHoverBorderWidth: 2,
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 500, easing: 'easeOutCubic' },
-        interaction: { mode: 'index', intersect: false },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#141414',
-            borderColor: '#262626',
-            borderWidth: 1,
-            titleColor: '#9ca3af',
-            titleFont: { family: 'Inter', size: 11, weight: '600' },
-            bodyColor: '#e5e7eb',
-            bodyFont: { family: 'Inter', size: 12 },
-            padding: 10,
-            displayColors: false,
-            callbacks: {
-              title: (items) => items[0].label,
-              label: (item) => '$' + item.parsed.y.toFixed(2) + ' saved',
-            },
-          },
-        },
-        scales: {
-          x: {
-            grid: { color: '#1a1a1a', drawTicks: false },
-            border: { display: false },
-            ticks: {
-              color: '#6b7280',
-              font: { family: 'Inter', size: 10 },
-              maxTicksLimit: 6,
-              autoSkip: true,
-              padding: 8,
-            },
-          },
-          y: {
-            grid: { color: '#1a1a1a', drawTicks: false },
-            border: { display: false },
-            beginAtZero: true,
-            ticks: {
-              color: '#6b7280',
-              font: { family: 'Inter', size: 10 },
-              padding: 10,
-              maxTicksLimit: 5,
-              callback: (v) => '$' + Number(v).toFixed(2),
-            },
-          },
-        },
-      },
-    });
-
-    function fmtClockLabel(iso) {
-      const d = new Date(iso);
-      return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-    }
-
-    // =====================================================================
-    // Recent activity table
-    // =====================================================================
-    const activityEl = document.getElementById('activity');
-    let seenTs = new Set();
-
-    function relativeTime(iso) {
-      const s = Math.max(0, Math.floor((Date.now() - new Date(iso).getTime()) / 1000));
-      if (s < 5) return 'just now';
-      if (s < 60) return s + 's ago';
-      const m = Math.floor(s / 60);
-      if (m < 60) return m + 'm ago';
-      return Math.floor(m / 60) + 'h ago';
-    }
-
-    function renderActivity(rows) {
-      if (!rows || rows.length === 0) {
-        activityEl.innerHTML = '<tr><td colspan="6" class="empty">Waiting for first request…</td></tr>';
-        return;
-      }
-      const top5 = rows.slice(0, 5);
-      const html = top5.map((r) => {
-        const isNew = !seenTs.has(r.ts);
-        const isHit = r.cache_status !== 'miss';
-        const badge = isHit
-          ? '<span class="badge badge-hit">hit</span>'
-          : '<span class="badge badge-miss">miss</span>';
-        const prompt = (r.prompt_preview || '').replace(/</g, '&lt;');
-        const tokensSaved = Number(r.tokens_saved || 0).toLocaleString('en-US');
-        return `
-          <tr class="${isNew ? 'row-new' : ''}">
-            <td class="time">${relativeTime(r.ts)}</td>
-            <td class="model">${r.model}</td>
-            <td class="prompt">${prompt}</td>
-            <td class="cache">${badge}</td>
-            <td class="tokens-saved">${tokensSaved}</td>
-            <td class="saved">$${Number(r.saved_usd).toFixed(4)}</td>
-          </tr>`;
-      }).join('');
-      activityEl.innerHTML = html;
-
-      // Track seen timestamps so we only animate genuinely new rows
-      const nextSeen = new Set();
-      rows.forEach((r) => nextSeen.add(r.ts));
-      seenTs = nextSeen;
-    }
-
-    // =====================================================================
     // Polling
     // =====================================================================
     const statusEl = document.getElementById('status');
@@ -611,7 +570,10 @@
 
     async function pollOnce() {
       try {
-        const res = await fetch(window.KAKAPO_API_BASE + '/api/stats', { cache: 'no-store' });
+        const res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard', {
+          cache: 'no-store',
+          headers: {},
+        });
         if (!res.ok) throw new Error('bad status ' + res.status);
         const s = await res.json();
         applyStats(s);
@@ -628,27 +590,11 @@
       tweens.spent.set(s.total_spent_usd || 0);
       tweens.rate.set(s.cache_hit_rate || 0);
       tweens.reqs.set(s.total_requests || 0);
-
-      if (Array.isArray(s.timeline) && s.timeline.length) {
-        chart.data.labels = s.timeline.map((b) => fmtClockLabel(b.ts));
-        chart.data.datasets[0].data = s.timeline.map((b) => b.cumulative_saved);
-        chart.update('none');
-      }
-
-      renderActivity(s.recent_requests || []);
     }
 
     pollOnce();
     setInterval(pollOnce, 2000);
-
-    // Re-render relative times every second so "3s ago" stays fresh
-    setInterval(() => {
-      // Refresh only the time cells; avoid resetting animations
-      const cells = activityEl.querySelectorAll('td.time');
-      if (!cells.length) return;
-      const tsList = Array.from(seenTs).sort((a, b) => new Date(b) - new Date(a)).slice(0, 5);
-      cells.forEach((cell, i) => { if (tsList[i]) cell.textContent = relativeTime(tsList[i]); });
-    }, 1000);
+  })();
   </script>
 </body>
 </html>

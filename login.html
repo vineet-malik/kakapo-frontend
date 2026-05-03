@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in — Kakapo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="config.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a;
+      --card: #141414;
+      --border: #262626;
+      --text: #e5e7eb;
+      --text-dim: #9ca3af;
+      --text-dimmer: #6b7280;
+      --accent: #10b981;
+      --danger: #ef4444;
+    }
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px 28px 28px;
+    }
+    .brand {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .sub {
+      font-size: 13px;
+      color: var(--text-dimmer);
+      margin-bottom: 28px;
+    }
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0a0a0a;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.15);
+    }
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button[type="submit"]:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .err {
+      font-size: 13px;
+      color: var(--danger);
+      margin-bottom: 16px;
+      display: none;
+    }
+    .err.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="brand">Kakapo</div>
+      <p class="sub">Sign in to open your dashboard.</p>
+      <div class="err" id="err"></div>
+      <form id="form">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" required />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+        <button type="submit" id="submit">Sign in</button>
+      </form>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var TOKEN_KEY = 'kakapo_auth_token';
+      if (localStorage.getItem(TOKEN_KEY)) {
+        var q = new URLSearchParams(window.location.search);
+        var next = q.get('next');
+        if (next && /^[a-zA-Z0-9._-]+\.html?$/.test(next)) {
+          window.location.replace(next);
+        } else {
+          window.location.replace('dashboard.html');
+        }
+        return;
+      }
+
+      var form = document.getElementById('form');
+      var err = document.getElementById('err');
+      var submit = document.getElementById('submit');
+
+      function safeNext() {
+        var q = new URLSearchParams(window.location.search);
+        var next = q.get('next');
+        if (next && /^[a-zA-Z0-9._-]+\.html?$/.test(next)) return next;
+        return 'dashboard.html';
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        err.classList.remove('show');
+        err.textContent = '';
+        submit.disabled = true;
+        var username = document.getElementById('username').value.trim();
+        var password = document.getElementById('password').value;
+        try {
+          var res = await fetch(window.KAKAPO_API_BASE + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password: password }),
+          });
+          var data = await res.json().catch(function () { return {}; });
+          if (!res.ok) {
+            var d = data.detail;
+            if (Array.isArray(d)) d = d.map(function (x) { return x.msg || JSON.stringify(x); }).join(' ');
+            err.textContent = d || data.message || ('Sign in failed (' + res.status + ')');
+            err.classList.add('show');
+            return;
+          }
+          var token = data.token || data.access_token;
+          if (!token) {
+            err.textContent = 'Server did not return a token.';
+            err.classList.add('show');
+            return;
+          }
+          localStorage.setItem(TOKEN_KEY, token);
+          window.location.href = safeNext();
+        } catch (ex) {
+          err.textContent = ex.message || 'Network error';
+          err.classList.add('show');
+        } finally {
+          submit.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -11,7 +11,9 @@ export default defineConfig({
     outDir: 'dist',
     rollupOptions: {
       input: {
+        index: './index.html',
         demo: './demo.html',
+        login: './login.html',
         dashboard: './dashboard.html',
       },
     },

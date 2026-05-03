@@ -2,10 +2,138 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=demo.html" />
-  <title>Kakapo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kakapo — AI gateway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a;
+      --text: #e5e7eb;
+      --text-dim: #9ca3af;
+      --accent: #10b981;
+    }
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    .nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px 24px;
+      z-index: 10;
+    }
+    .nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav a:hover { color: var(--accent); }
+    .wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 72px 20px 80px;
+    }
+    .tweet-slot {
+      width: 100%;
+      max-width: 560px;
+      display: flex;
+      justify-content: center;
+    }
+    .twitter-tweet {
+      margin: 0 auto !important;
+    }
+    .tagline {
+      margin-top: 36px;
+      max-width: 36rem;
+      text-align: center;
+      font-size: clamp(1.125rem, 2.5vw, 1.35rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .tagline a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .tagline a:hover {
+      border-bottom-color: var(--accent);
+    }
+    .existing {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .existing span {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+    .existing .btn-signin {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #0a0a0a;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .existing .btn-signin:hover {
+      filter: brightness(1.06);
+    }
+  </style>
 </head>
 <body>
-  <p><a href="demo.html">Open demo</a></p>
+  <nav class="nav" aria-label="Primary">
+    <a href="login.html">Sign in</a>
+  </nav>
+
+  <main class="wrap">
+    <div class="tweet-slot">
+      <blockquote class="twitter-tweet" data-media-max-width="560" data-dnt="true">
+        <p lang="en" dir="ltr">
+          You accidentally say &quot;Hello&quot; to Claude Opus 4.7 and it consumes 4% of your session limit.
+          <a href="https://t.co/tlFzeHRfc1">pic.twitter.com/tlFzeHRfc1</a>
+        </p>
+        &mdash; Noah (@NoahKingJr)
+        <a href="https://twitter.com/NoahKingJr/status/2048825180517269814?ref_src=twsrc%5Etfw">April 27, 2026</a>
+      </blockquote>
+    </div>
+
+    <p class="tagline">
+      Stop wastage of tokens with Kakapo AI gateway,
+      <a href="mailto:hi@trykakapo.com">get in touch</a>.
+    </p>
+
+    <div class="existing">
+      <span>Existing user?</span>
+      <a class="btn-signin" href="login.html">Sign in</a>
+    </div>
+  </main>
+
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>

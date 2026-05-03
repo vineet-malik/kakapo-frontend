@@ -4,7 +4,7 @@ Static **demo** (chat + embedded dashboard) and **dashboard** for the [Kakapo](h
 
 ## Prerequisites
 
-1. Run the **proxy** from `kakapo/src/backend` (default `http://127.0.0.1:8000`).
+1. Run the **proxy** from `kakapo/src/backend` (default `http://127.0.0.1:8000`). 
 2. The backend must allow **CORS** from the origin you use to open these files (see backend `CORS_ALLOW_ORIGINS`).
 
 ## Run locally
@@ -43,4 +43,4 @@ Build has no compile step: upload `demo.html`, `dashboard.html`, and `config.js`
 |------|------|
 | `config.js` | Sets `window.KAKAPO_API_BASE` |
 | `demo.html` | Chat + iframe to `dashboard.html` |
-| `dashboard.html` | Stats + chart; calls `/api/stats` on the API base |
+| `dashboard.html` | Auth + tabs; `GET /api/dashboard` (Bearer) returns month-to-date team stats (four numeric fields) |
