@@ -58,29 +58,40 @@
       margin: 0 auto !important;
     }
     .tagline {
-      margin-top: 36px;
-      max-width: 36rem;
-      text-align: center;
-      font-size: clamp(1.125rem, 2.5vw, 1.35rem);
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-    .tagline a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
-    }
-    .tagline a:hover {
-      border-bottom-color: var(--accent);
-    }
-    .existing {
-      margin-top: 28px;
+      margin-top: 40px;
+      max-width: 22rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
+      text-align: center;
+      line-height: 1.55;
+      font-size: clamp(1.0625rem, 2.2vw, 1.25rem);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-wrap: balance;
+    }
+    .tagline-lead {
+      margin: 0;
+    }
+    .tagline-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 1px solid rgba(16, 185, 129, 0.4);
+      padding-bottom: 1px;
+    }
+    .tagline-link:hover {
+      border-bottom-color: var(--accent);
+    }
+    .existing {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
     .existing span {
       font-size: 14px;
@@ -113,19 +124,12 @@
 
   <main class="wrap">
     <div class="tweet-slot">
-      <blockquote class="twitter-tweet" data-media-max-width="560" data-dnt="true">
-        <p lang="en" dir="ltr">
-          You accidentally say &quot;Hello&quot; to Claude Opus 4.7 and it consumes 4% of your session limit.
-          <a href="https://t.co/tlFzeHRfc1">pic.twitter.com/tlFzeHRfc1</a>
-        </p>
-        &mdash; Noah (@NoahKingJr)
-        <a href="https://twitter.com/NoahKingJr/status/2048825180517269814?ref_src=twsrc%5Etfw">April 27, 2026</a>
-      </blockquote>
+      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">You accidentally say &quot;Hello&quot; to Claude Opus 4.7 and it consumes 4% of your session limit. <a href="https://t.co/tlFzeHRfc1">pic.twitter.com/tlFzeHRfc1</a></p>&mdash; Noah (@NoahKingJr) <a href="https://twitter.com/NoahKingJr/status/2048825180517269814?ref_src=twsrc%5Etfw">April 27, 2026</a></blockquote>
     </div>
 
     <p class="tagline">
-      Stop wastage of tokens with Kakapo AI gateway,
-      <a href="mailto:hi@trykakapo.com">get in touch</a>.
+      <span class="tagline-lead">Stop wastage of tokens with Kakapo AI gateway.</span>
+      <a class="tagline-link" href="mailto:hi@trykakapo.com">Get in touch</a>
     </p>
 
     <div class="existing">
