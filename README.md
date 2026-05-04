@@ -67,9 +67,13 @@ Do these in order so CloudFront has a working origin.
 
 3. **Default cache behavior**  
    - **Viewer protocol policy:** **Redirect HTTP to HTTPS**.  
-   - **Allowed HTTP methods:** include **GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE**.  
+   - **Allowed HTTP methods:** include **GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE** (**OPTIONS** is required for browser CORS preflight).  
    - **Cache policy:** **CachingDisabled** (good for APIs).  
-   - **Origin request policy:** start with **CORS-CustomOrigin** (managed). If OPTIONS or headers misbehave, try **AllViewer** while debugging.
+   - **Origin request policy (critical for CORS):** CloudFront must **forward** the preflight headers to the origin so FastAPI can answer **`OPTIONS`** with **200**, not **405**. At minimum the origin request policy must include **`Origin`**, **`Access-Control-Request-Method`**, and **`Access-Control-Request-Headers`**.  
+     - In the console: **Behaviors** → edit the behavior → **Cache key and origin requests** → pick a policy that forwards those headers.  
+     - AWS managed **`CORS-CustomOrigin`** is the usual choice; if the browser still shows **405** on preflight, temporarily try **`AllViewer`**, or create a **custom** origin request policy that explicitly allow-lists the three headers above.  
+     - **Terraform / IaC:** set **`origin_request_policy_id`** to the managed **`CORS-CustomOrigin`** policy (or a custom policy equivalent).  
+   - If **405** on **`OPTIONS`** appears only via **`https://….cloudfront.net`** but **not** when calling the **ALB/origin URL** directly, the problem is this policy (headers not forwarded), not the FastAPI CORS code.
 
 4. **Create distribution** and wait until status is **Deployed** (often 10–20+ minutes). Copy the **distribution domain** (this repo defaults to **`https://d3msaxyuekquhy.cloudfront.net`** — change all `defaultBase` copies if you replace the distribution).
 
@@ -83,6 +87,15 @@ Do these in order so CloudFront has a working origin.
    ```
 
    Expect **200**. **502/504** usually means CloudFront cannot reach the origin (wrong port, SG, or app not on `0.0.0.0`).
+
+6. **Verify CORS preflight through CloudFront** (should be **200**, not **405**):
+
+   ```bash
+   curl -i -sS -X OPTIONS "https://d3msaxyuekquhy.cloudfront.net/api/auth/login" \
+     -H "Origin: https://www.trykakapo.com" \
+     -H "Access-Control-Request-Method: POST" \
+     -H "Access-Control-Request-Headers: content-type"
+   ```
 
 ## After CloudFront (frontend)
 
