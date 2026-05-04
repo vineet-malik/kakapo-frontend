@@ -2,11 +2,11 @@
 
 This document is the **only** contract between the **Kakapo static dashboard** (`login.html`, `dashboard.html`) and the **Python proxy**. Each response shape is **fixed**: one status code set, one JSON shape, one field name per concept. Implementations that return a different shape are **non-compliant**; the dashboard is updated to match this file, not the reverse.
 
-Base URL: `KAKAPO_API_BASE` (no trailing slash), e.g. `http://127.0.0.1:8000`. All paths below are relative to that base.
+Base URL: `KAKAPO_API_BASE` (no trailing slash), e.g. `https://…` (deployed) or `http://127.0.0.1:8000` (local). All paths below are relative to that base.
 
 **Request bodies:** `Content-Type: application/json` where a body is defined.
 
-**Auth:** every route except `POST /api/auth/login` requires:
+**Auth:** every route except `POST /auth/login` requires:
 
 ```http
 Authorization: Bearer <access_token>
@@ -20,7 +20,7 @@ Authorization: Bearer <access_token>
 
 | Method | Path | Success status | Response body |
 |--------|------|----------------|---------------|
-| `POST` | `/api/auth/login` | **200** | `{"token":"<string>"}` |
+| `POST` | `/auth/login` | **200** | `{"token":"<string>"}` |
 | `GET` | `/api/dashboard/keys` | **200** | `{"keys":[...]}` |
 | `POST` | `/api/dashboard/keys` | **200** | `{"key":"<secret>","id":"<string>","prefix":"<string>"}` |
 | `DELETE` | `/api/dashboard/keys/:id` | **204** | empty body |
@@ -32,7 +32,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-## `POST /api/auth/login`
+## `POST /auth/login`
 
 **Request body (required fields):**
 

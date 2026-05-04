@@ -7,7 +7,7 @@ This file is the **database contract** paired with **`DASHBOARD_API.md`**. Backe
 ## 1. Tenant isolation (hard rules)
 
 1. **`org_id` is a UUID.** It is the primary key `org.id` and the foreign key column on every tenant-owned table in this document.
-2. **Every read and write** on `api_key`, `scope`, and `usage_daily` **must** filter or set `org_id` using the value taken **only** from **auth** (validated session established at `POST /api/auth/login`). **Never** take `org_id` from the HTTP request body or query string for authorization.
+2. **Every read and write** on `api_key`, `scope`, and `usage_daily` **must** filter or set `org_id` using the value taken **only** from **auth** (validated session established at `POST /auth/login`). **Never** take `org_id` from the HTTP request body or query string for authorization.
 3. **Auth binding:** Validating the `token` from **`DASHBOARD_API.md`** **must** yield **`org_id` == `org.id`** (same UUID). Database columns `org_id` are typed UUID and store that same value.
 4. **Two companies never share rows:** any `SELECT` / `UPDATE` / `DELETE` / `INSERT` for tenant data **must** include `org_id = <value from auth>` in the predicate or column list so rows from another `org_id` cannot be read or modified.
 
@@ -188,7 +188,7 @@ The seven numeric placeholders are the **deltas** for that single completed requ
 
 | # | HTTP | Path | Database action |
 |---|------|------|-----------------|
-| 1 | `POST` | `/api/auth/login` | `SELECT id, password_hash FROM org WHERE username = $username`. On password match, issue `token` whose validation yields `org_id = org.id`. |
+| 1 | `POST` | `/auth/login` | `SELECT id, password_hash FROM org WHERE username = $username`. On password match, issue `token` whose validation yields `org_id = org.id`. |
 | 2 | `GET` | `/api/dashboard/keys` | `SELECT id, label, key_prefix, default_scope, last_used_at, revoked_at FROM api_key WHERE org_id = $org_id ORDER BY created_at DESC`. Map `revoked_at IS NOT NULL` → `"revoked": true`. |
 | 3 | `POST` | `/api/dashboard/keys` | `INSERT INTO api_key (id, org_id, label, key_prefix, secret_hash, default_scope, revoked_at, last_used_at, created_at) VALUES (…)`. Return plaintext `key` once in JSON; store only `secret_hash`. |
 | 4 | `DELETE` | `/api/dashboard/keys/:id` | `UPDATE api_key SET revoked_at = now() WHERE id = $id AND org_id = $org_id`. If zero rows updated, return **404** per **`DASHBOARD_API.md`**. |
