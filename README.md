@@ -31,15 +31,17 @@ Open `http://localhost:5173/demo.html`.
 - One-off: open `demo.html?api=http://your-host:8000`
 - Or in the browser console: `localStorage.setItem('kakapo_api_base', 'http://your-host:8000')` then reload.
 
-Default if unset: the **dev ALB** URL embedded in `login.html` / `demo.html` / `dashboard.html` (HTTPS). For a local uvicorn proxy, open any page with **`?api=http://127.0.0.1:8000`** once (it is stored in `localStorage`) or set `localStorage.setItem('kakapo_api_base', 'http://127.0.0.1:8000')` before signing in.
+Default if unset: the **dev ALB** over **`http://`** (same as working `curl`). Override with **`?api=`** or **`localStorage.kakapo_api_base`** for local uvicorn or an HTTPS API.
 
-**Auth:** the dashboard calls **`POST {KAKAPO_API_BASE}/auth/login`** with JSON `username` / `password` (same as your working `curl` against the ALB).
+**HTTPS static site (e.g. `https://www.trykakapo.com`):** browsers **block** `fetch()` to **`http://`** APIs (mixed content). For that case you must either serve this UI over **HTTP**, put an **HTTPS** URL in `?api=` / `localStorage`, or add a **same-origin HTTPS proxy** to the ALB.
+
+**Auth:** the dashboard calls **`POST {KAKAPO_API_BASE}/auth/login`** with JSON `username` / `password`.
 
 ## Deploy
 
 There is no required compile step for production: upload the HTML entrypoints and static assets to any static host (S3, Netlify, GitHub Pages). At minimum include **`index.html`**, **`demo.html`**, **`login.html`**, **`dashboard.html`**, and the **`images/`** directory (referenced from `index.html`). **`login.html`**, **`demo.html`**, and **`dashboard.html`** each embed the API base bootstrap (same logic as **`config.js`** in the repo), so sign-in still works if **`config.js`** is missing from the bucket. Optionally publish **`config.js`** for consistency; override the API base with **`?api=`** or **`localStorage.kakapo_api_base`** when testing.
 
-**HTTPS static host (e.g. Amplify):** the default API URL uses **`https://`** on the dev ALB so the browser does not block requests as mixed content. A plain `http://` ALB endpoint works from `curl` on your machine, but the hosted app still needs **TLS on the load balancer** (or HTTPS in front of the ALB) for sign-in from the browser to succeed.
+**CORS:** the backend must allow your static origin (see `CORS_ALLOW_ORIGINS`).
 
 `npm run build` (Vite) emits a **`dist/`** folder with the same pages if you prefer a packaged output; add your host’s rewrite rules if you need clean URLs.
 
