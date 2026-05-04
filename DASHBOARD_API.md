@@ -6,7 +6,7 @@ Base URL: `KAKAPO_API_BASE` (no trailing slash), e.g. `http://127.0.0.1:8000` (l
 
 **Request bodies:** `Content-Type: application/json` where a body is defined.
 
-**Auth:** every route except `POST /auth/login` requires:
+**Auth:** every route except `POST /api/auth/login` requires:
 
 ```http
 Authorization: Bearer <access_token>
@@ -20,7 +20,7 @@ Authorization: Bearer <access_token>
 
 | Method | Path | Success status | Response body |
 |--------|------|----------------|---------------|
-| `POST` | `/auth/login` | **200** | `{"token":"<string>"}` |
+| `POST` | `/api/auth/login` | **200** | `{"token":"<string>"}` |
 | `GET` | `/api/dashboard/keys` | **200** | `{"keys":[...]}` |
 | `POST` | `/api/dashboard/keys` | **200** | `{"key":"<secret>","id":"<string>","prefix":"<string>"}` |
 | `DELETE` | `/api/dashboard/keys/:id` | **204** | empty body |
@@ -32,7 +32,7 @@ Authorization: Bearer <access_token>
 
 ---
 
-## `POST /auth/login`
+## `POST /api/auth/login`
 
 **Request body (required fields):**
 

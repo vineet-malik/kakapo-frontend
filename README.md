@@ -43,7 +43,7 @@ Do these in order so CloudFront has a working origin.
 
    ```bash
    curl -sS -w "\nHTTP:%{http_code}\n" \
-     -X POST "http://YOUR_PUBLIC_DNS_OR_IP:8000/auth/login" \
+     -X POST "http://YOUR_PUBLIC_DNS_OR_IP:8000/api/auth/login" \
      -H "Content-Type: application/json" \
      -d '{"username":"admin","password":"password"}'
    ```
@@ -77,7 +77,7 @@ Do these in order so CloudFront has a working origin.
 
    ```bash
    curl -sS -w "\nHTTP:%{http_code}\n" \
-     -X POST "https://d111111abcdef8.cloudfront.net/auth/login" \
+     -X POST "https://d111111abcdef8.cloudfront.net/api/auth/login" \
      -H "Content-Type: application/json" \
      -d '{"username":"admin","password":"password"}'
    ```
@@ -97,7 +97,7 @@ The default API base in the repo is **`http://127.0.0.1:8000`** (local dev). For
 
 - **Permanent:** set the same URL as `defaultBase` in **`config.js`** and in the matching inline `<script>` at the top of **`login.html`**, **`dashboard.html`**, and **`demo.html`** (keep all four identical).
 
-**Auth:** `POST {KAKAPO_API_BASE}/auth/login` with JSON `username` / `password`.
+**Auth:** `POST {KAKAPO_API_BASE}/api/auth/login` with JSON `username` / `password`.
 
 ## Point at a different API
 
@@ -119,7 +119,7 @@ Upload **`index.html`**, **`demo.html`**, **`login.html`**, **`dashboard.html`**
 | `config.js` | Same `defaultBase` logic as the inline bootstrap in `login.html` / `demo.html` / `dashboard.html` (keep in sync) |
 | `index.html` | Landing page |
 | `demo.html` | Chat + iframe to `dashboard.html` |
-| `login.html` | Dashboard login; `POST /auth/login` on `KAKAPO_API_BASE` |
+| `login.html` | Dashboard login; `POST /api/auth/login` on `KAKAPO_API_BASE` |
 | `dashboard.html` | Keys / Scopes / Analytics; APIs under `/api/dashboard/…` |
 | `DASHBOARD_API.md` | HTTP contract for the dashboard and the static UI |
 | `DASHBOARD_DB.md` | Prescriptive DB shape for the proxy implementing those APIs |

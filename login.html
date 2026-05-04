@@ -214,7 +214,7 @@
             window.location.href = safeNext();
             return;
           }
-          var res = await fetch(window.KAKAPO_API_BASE + '/auth/login', {
+          var res = await fetch(window.KAKAPO_API_BASE + '/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: username, password: password }),
