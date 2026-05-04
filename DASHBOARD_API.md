@@ -2,7 +2,7 @@
 
 This document is the **only** contract between the **Kakapo static dashboard** (`login.html`, `dashboard.html`) and the **Python proxy**. Each response shape is **fixed**: one status code set, one JSON shape, one field name per concept. Implementations that return a different shape are **non-compliant**; the dashboard is updated to match this file, not the reverse.
 
-Base URL: `KAKAPO_API_BASE` (no trailing slash), e.g. `http://…` (dev ALB) or `http://127.0.0.1:8000` (local). All paths below are relative to that base.
+Base URL: `KAKAPO_API_BASE` (no trailing slash), e.g. `http://127.0.0.1:8000` (local) or `https://….cloudfront.net` (HTTPS in front of EC2). All paths below are relative to that base.
 
 **Request bodies:** `Content-Type: application/json` where a body is defined.
 
