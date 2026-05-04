@@ -311,7 +311,7 @@
           </select>
           <button class="send" id="send">Send</button>
         </div>
-        <div class="hint">Enter to send · Shift+Enter for newline · Pick a model to demo routing</div>
+        <div class="hint">Enter to send · Shift+Enter for newline · Uses <span class="mono">POST /v1/query</span> with your dashboard session token</div>
       </div>
     </div>
 
@@ -423,33 +423,54 @@
       autogrow();
 
       sendBtn.disabled = true;
+      const t0 = Date.now();
       appendTyping();
 
       const requestedModel = modelSelect?.value || 'gemini-flash-latest';
-      const t0 = Date.now();
+      const token = localStorage.getItem('kakapo_auth_token');
+      if (!token) {
+        removeTyping();
+        appendAssistant(
+          'Sign in from the dashboard on the right first — chat uses the same session (Bearer token).',
+          Date.now() - t0,
+          0,
+          0,
+          requestedModel
+        );
+        sendBtn.disabled = false;
+        inputEl.focus();
+        return;
+      }
+
       try {
-        const res = await fetch(window.KAKAPO_API_BASE + '/v1/chat/completions', {
+        const headers = { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token };
+        const res = await fetch(window.KAKAPO_API_BASE + '/v1/query', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: requestedModel,
-            messages: history,
-          }),
+          headers: headers,
+          body: JSON.stringify({ query: text }),
         });
         const latencyMs = Date.now() - t0;
         removeTyping();
 
         if (!res.ok) {
-          const errText = await res.text().catch(() => 'error');
+          let errText = await res.text().catch(() => 'error');
+          try {
+            const ej = JSON.parse(errText);
+            if (typeof ej.detail === 'string') errText = ej.detail;
+          } catch (e) { /* keep raw */ }
           appendAssistant(`Error: ${res.status} ${errText}`, latencyMs, 0, 0, requestedModel);
           return;
         }
 
         const data = await res.json();
-        const content = data?.choices?.[0]?.message?.content ?? '(no content)';
-        const tokensIn = data?.usage?.prompt_tokens ?? 0;
-        const tokensOut = data?.usage?.completion_tokens ?? 0;
-        const servedModel = data?.model || requestedModel;
+        const content =
+          typeof data?.response === 'string'
+            ? data.response
+            : (data?.choices?.[0]?.message?.content ?? '(no content)');
+        const meta = data?.metadata && typeof data.metadata === 'object' ? data.metadata : {};
+        const tokensIn = Number(meta.prompt_tokens ?? meta.tokens_in ?? 0) || 0;
+        const tokensOut = Number(meta.completion_tokens ?? meta.tokens_out ?? 0) || 0;
+        const servedModel = typeof data?.model === 'string' ? data.model : requestedModel;
 
         history.push({ role: 'assistant', content });
         appendAssistant(content, latencyMs, tokensIn, tokensOut, servedModel);

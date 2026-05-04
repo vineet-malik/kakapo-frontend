@@ -1204,16 +1204,27 @@
       td.colSpan = 7; td.className = 'empty'; td.textContent = 'Loading…';
       tr.appendChild(td); scopesTbody.appendChild(tr);
 
-      var merged = readScopesLocal();
+      var merged;
+      if (useDevFixtures) {
+        merged = readScopesLocal();
+      } else {
+        merged = [];
+      }
       try {
         var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/scopes', { method: 'GET' });
         if (res.ok) {
           var data = await res.json();
-          if (data && Array.isArray(data.scopes) && data.scopes.length > 0) {
-            merged = data.scopes;
+          if (data && Array.isArray(data.scopes)) {
+            if (useDevFixtures && data.scopes.length === 0) {
+              /* dev mock returns []; keep seeded local scopes */
+            } else {
+              merged = data.scopes;
+            }
           }
         }
-      } catch (e) { /* keep local */ }
+      } catch (e) {
+        if (!useDevFixtures) merged = [];
+      }
 
       scopesTbody.innerHTML = '';
       if (!merged.length) {
@@ -1289,21 +1300,20 @@
       var policy = document.getElementById('ms-policy').value;
       var wait = parseInt(document.getElementById('ms-wait').value, 10) || 120;
       var models = document.getElementById('ms-models').value;
-      var row = {
-        id: 's_' + Math.random().toString(36).slice(2, 12),
+      var apiBody = {
         name: name,
         rpm: rpm,
         token_budget_daily: tokens,
         policy: policy,
         queue_max_wait_s: wait,
         models: models,
-        source: 'local',
       };
+      var row = Object.assign({ id: 's_' + Math.random().toString(36).slice(2, 12), source: 'local' }, apiBody);
       setScopesMsg('');
       try {
         var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/scopes', {
           method: 'POST',
-          body: JSON.stringify(row),
+          body: JSON.stringify(apiBody),
         });
         var data = await res.json().catch(function () { return {}; });
         if (res.status === 201 && data && data.scope) {

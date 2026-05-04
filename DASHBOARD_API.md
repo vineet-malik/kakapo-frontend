@@ -170,7 +170,18 @@ The field name is **`token`**. No other top-level field is defined for success.
 
 ## `POST /api/dashboard/scopes`
 
-**Request body** — **must** match one `scopes[]` element from `GET /api/dashboard/scopes` (same field names and types). The `id` in the body is ignored or regenerated server-side; the client may send a temporary `id` for correlation.
+**Request body** — send only the fields below (same names as `GET` rows). Do not send `id` or `source`; the server assigns `id`.
+
+```json
+{
+  "name": "<string>",
+  "rpm": <integer>,
+  "token_budget_daily": <integer>,
+  "policy": "<string>",
+  "queue_max_wait_s": <integer>,
+  "models": "<string>"
+}
+```
 
 **Response `201 Created`** — body **must** be:
 
