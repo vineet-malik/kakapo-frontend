@@ -171,6 +171,90 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
+    .coming-soon {
+      max-width: 560px;
+      margin: 40px auto 0;
+      padding: 36px 32px 40px;
+      text-align: center;
+      background: linear-gradient(165deg, var(--elevated) 0%, #151515 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.08), 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+    .coming-soon .badge-soon {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #4ade80;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      border-radius: 999px;
+      padding: 7px 16px;
+      margin-bottom: 20px;
+    }
+    .coming-soon h2 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin: 0 0 14px;
+      color: var(--text);
+    }
+    .coming-soon .coming-soon-lead {
+      margin: 0 auto 22px;
+      max-width: 440px;
+      font-size: 15px;
+      line-height: 1.6;
+      font-weight: 500;
+      color: #c8c8c8;
+    }
+    .coming-soon-list {
+      list-style: none;
+      margin: 0 auto;
+      padding: 0;
+      max-width: 420px;
+      text-align: left;
+    }
+    .coming-soon-list li {
+      position: relative;
+      padding: 10px 0 10px 22px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #bdbdbd;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .coming-soon-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .coming-soon-list strong {
+      color: #e8e8e8;
+      font-weight: 600;
+    }
+    .coming-soon-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 17px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.45);
+    }
+    .tab-new {
+      margin-left: 2px;
+      font-size: 12px;
+      vertical-align: middle;
+      opacity: 0.95;
+    }
+    #panel-cache .panel-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
     .panel-head {
       display: flex;
       justify-content: space-between;
@@ -522,6 +606,7 @@
           <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="keys">Keys</button>
           <button type="button" class="tab" role="tab" aria-selected="false" data-tab="scopes">Scopes</button>
           <button type="button" class="tab" role="tab" aria-selected="false" data-tab="analytics">Analytics</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-tab="cache" aria-label="Cache, new">Cache<span class="tab-new" aria-hidden="true"> ⭐</span></button>
         </nav>
       </div>
       <div class="topbar-right">
@@ -687,6 +772,29 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </section>
+
+    <!-- Cache (coming soon) -->
+    <section id="panel-cache" class="tab-panel" role="tabpanel" hidden>
+      <div class="panel-head">
+        <div>
+          <h1 class="panel-title">Cache</h1>
+          <p class="panel-desc">Soon: see what's cached, what's fresh, and where you're saving tokens.</p>
+        </div>
+      </div>
+      <div class="coming-soon">
+        <span class="badge-soon">Coming next</span>
+        <h2>Same question twice?<br />Pay once.</h2>
+        <p class="coming-soon-lead">
+          Semantic cache is the next big ship: repeated prompts can skip the model when it's safe,
+          so you get speed and lower spend without guessing.
+        </p>
+        <ul class="coming-soon-list">
+          <li><strong>Hit / miss in plain sight</strong> — a dashboard that tells you what's working, not a black box.</li>
+          <li><strong>Rules you own</strong> — tiers, TTLs, and per-scope defaults you configure.</li>
+          <li><strong>Fresh when it matters</strong> — stale-while-revalidate style flows: fast answers while we refresh in the background.</li>
+        </ul>
       </div>
     </section>
   </div>
@@ -936,6 +1044,7 @@
       keys: document.getElementById('panel-keys'),
       scopes: document.getElementById('panel-scopes'),
       analytics: document.getElementById('panel-analytics'),
+      cache: document.getElementById('panel-cache'),
     };
     document.querySelectorAll('.tab').forEach(function (btn) {
       btn.addEventListener('click', function () {
