@@ -104,6 +104,25 @@
       display: none;
     }
     .err.show { display: block; }
+    .dev-hint {
+      display: none;
+      font-size: 12px;
+      color: var(--text-dimmer);
+      background: #0f0f0f;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      line-height: 1.45;
+    }
+    .dev-hint.show { display: block; }
+    .dev-hint code {
+      font-size: 11px;
+      background: #1a1a1a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
   </style>
 </head>
 <body>
@@ -111,6 +130,7 @@
     <div class="card">
       <div class="brand">Kakapo</div>
       <p class="sub">Sign in to open your dashboard.</p>
+      <div class="dev-hint" id="dev-hint" aria-live="polite"></div>
       <div class="err" id="err"></div>
       <form id="form">
         <label for="username">Username</label>
@@ -138,6 +158,30 @@
       var form = document.getElementById('form');
       var err = document.getElementById('err');
       var submit = document.getElementById('submit');
+      var devHint = document.getElementById('dev-hint');
+
+      var DEV_USER = 'demo';
+      var DEV_PASS = 'kakapo-demo';
+      var DEV_TOKEN = window.KAKAPO_DEV_SESSION_TOKEN || 'kakapo_local_dev_session';
+
+      function allowLocalDevLogin() {
+        var q = new URLSearchParams(window.location.search).get('dev');
+        if (q === '1' || q === 'true') return true;
+        var h = (location.hostname || '').toLowerCase();
+        if (h === 'localhost' || h === '127.0.0.1') return true;
+        if (location.protocol === 'file:') return true;
+        return false;
+      }
+
+      if (allowLocalDevLogin()) {
+        devHint.innerHTML =
+          '<strong>Local preview</strong> — no backend required. Use username <code>' +
+          DEV_USER +
+          '</code> and password <code>' +
+          DEV_PASS +
+          '</code>. Opens the dashboard with sample keys, scopes, and analytics.';
+        devHint.classList.add('show');
+      }
 
       function safeNext() {
         var q = new URLSearchParams(window.location.search);
@@ -154,6 +198,11 @@
         var username = document.getElementById('username').value.trim();
         var password = document.getElementById('password').value;
         try {
+          if (allowLocalDevLogin() && username === DEV_USER && password === DEV_PASS) {
+            localStorage.setItem(TOKEN_KEY, DEV_TOKEN);
+            window.location.href = safeNext();
+            return;
+          }
           var res = await fetch(window.KAKAPO_API_BASE + '/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -161,13 +210,14 @@
           });
           var data = await res.json().catch(function () { return {}; });
           if (!res.ok) {
-            var d = data.detail;
-            if (Array.isArray(d)) d = d.map(function (x) { return x.msg || JSON.stringify(x); }).join(' ');
-            err.textContent = d || data.message || ('Sign in failed (' + res.status + ')');
+            err.textContent =
+              typeof data.detail === 'string' && data.detail
+                ? data.detail
+                : 'Sign in failed (' + res.status + ')';
             err.classList.add('show');
             return;
           }
-          var token = data.token || data.access_token;
+          var token = data.token;
           if (!token) {
             err.textContent = 'Server did not return a token.';
             err.classList.add('show');

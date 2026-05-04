@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=1440" />
-  <title>Kakapo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — Kakapo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,16 +12,19 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0a0a0a;
-      --card: #141414;
-      --border: #262626;
-      --border-soft: #1a1a1a;
-      --text: #e5e7eb;
-      --text-dim: #9ca3af;
-      --text-dimmer: #6b7280;
-      --accent: #10b981;
-      --muted: #64748b;
-      --danger: #ef4444;
+      --bg: #0c0c0c;
+      --surface: #141414;
+      --elevated: #1a1a1a;
+      --border: #2a2a2a;
+      --border-soft: #1f1f1f;
+      --text: #ececec;
+      --text-muted: #a1a1a1;
+      --text-faint: #6b6b6b;
+      --accent: #22c55e;
+      --accent-dim: rgba(34, 197, 94, 0.14);
+      --danger: #f87171;
+      --warn: #fbbf24;
+      --info: #60a5fa;
     }
 
     html, body {
@@ -35,135 +38,77 @@
     }
 
     .container {
-      max-width: 1280px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 32px 40px 80px;
+      padding: 28px 24px 64px;
     }
 
-    /* ========== Top bar ========== */
     .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 16px;
-      padding-bottom: 28px;
+      padding-bottom: 22px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
     .topbar-left {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
     }
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+    }
+    .brand {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
     .tabs {
       display: flex;
-      gap: 4px;
-      background: var(--card);
+      gap: 2px;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 4px;
+      padding: 3px;
     }
     .tab {
       border: none;
       background: transparent;
-      color: var(--text-dim);
+      color: var(--text-muted);
       font-family: inherit;
       font-size: 13px;
       font-weight: 500;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .tab:hover { color: var(--text); }
-    .tab.active {
-      background: var(--border);
-      color: var(--text);
-    }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-    .btn {
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
       padding: 8px 14px;
       border-radius: 6px;
       cursor: pointer;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-dim);
+      white-space: nowrap;
     }
-    .btn:hover { color: var(--text); border-color: var(--text-dimmer); }
-    .btn-primary {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #0a0a0a;
-    }
-    .btn-primary:hover { filter: brightness(1.05); color: #0a0a0a; }
-    .btn-sm { padding: 6px 10px; font-size: 11px; }
-    .keys-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .keys-toolbar h2 {
-      font-size: 15px;
-      font-weight: 600;
+    .tab:hover { color: var(--text); }
+    .tab.active {
+      background: var(--elevated);
       color: var(--text);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.4);
     }
-    .key-reveal {
-      margin-top: 20px;
-      padding: 16px 18px;
-      border-radius: 8px;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      background: rgba(16, 185, 129, 0.08);
-      display: none;
+    .tab:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
     }
-    .key-reveal.show { display: block; }
-    .key-reveal-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-    .key-reveal-value {
-      font-family: ui-monospace, monospace;
-      font-size: 13px;
-      word-break: break-all;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-    .keys-msg {
-      font-size: 13px;
-      color: var(--text-dimmer);
-      margin-bottom: 12px;
-    }
-    .keys-msg.err { color: var(--danger); }
-    .brand {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: var(--text);
-    }
+
     .status {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.08em;
-      color: var(--text-dim);
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
     }
     .status-dot {
       width: 6px; height: 6px;
@@ -173,207 +118,767 @@
     }
     .status.error .status-dot {
       background: var(--danger);
-      animation: pulse-error 1s ease-in-out infinite;
+      animation: none;
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
-      50%      { opacity: 0.5; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-    }
-    @keyframes pulse-error {
       0%, 100% { opacity: 1; }
-      50%      { opacity: 0.3; }
+      50% { opacity: 0.45; }
     }
 
-    /* ========== Stat tiles ========== */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .tile {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px 22px;
-      min-height: 108px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .tile.hero {
-      grid-column: span 1;
-      min-height: 160px;
-    }
-    .tile-label {
-      font-size: 11px;
+    .btn {
+      font-family: inherit;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
     }
-    .tile-value {
-      font-size: 30px;
+    .btn:hover { color: var(--text); border-color: var(--text-faint); }
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #052e16;
+    }
+    .btn-primary:hover { filter: brightness(1.06); color: #052e16; }
+    .btn-ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--text-muted);
+    }
+    .btn-ghost:hover { color: var(--text); background: var(--elevated); }
+    .btn-danger {
+      border-color: rgba(248, 113, 113, 0.35);
+      color: var(--danger);
+      background: rgba(248, 113, 113, 0.06);
+    }
+    .btn-danger:hover { border-color: var(--danger); color: #fecaca; }
+    .btn-sm { padding: 6px 10px; font-size: 11px; }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .panel-title {
+      font-size: 16px;
       font-weight: 600;
       letter-spacing: -0.02em;
-      color: var(--text);
-      font-variant-numeric: tabular-nums;
-      line-height: 1.1;
     }
-    .tile.hero .tile-value {
-      font-size: 60px;
-      color: var(--accent);
+    .panel-desc {
+      font-size: 12px;
+      color: var(--text-faint);
+      margin-top: 4px;
+      max-width: 520px;
     }
-    .tile.spent .tile-value { color: var(--muted); }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-    /* ========== Cards / tables (keys tab) ========== */
-    .activity-card {
-      background: var(--card);
+    input[type="text"], input[type="number"], select {
+      font-family: inherit;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: #0a0a0a;
+      color: var(--text);
+      min-width: 0;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .input-search { width: 200px; max-width: 100%; }
+
+    .card {
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
     }
-    .activity-head {
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--border);
-    }
-    .activity-title {
-      font-size: 13px;
+    .card-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      font-size: 12px;
       font-weight: 600;
-      color: var(--text);
+      color: var(--text-muted);
     }
-    .activity-scroll {
+
+    .scroll-x {
       overflow-x: auto;
-      overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) var(--border-soft);
     }
-    .activity-scroll::-webkit-scrollbar {
-      height: 8px;
-    }
-    .activity-scroll::-webkit-scrollbar-track {
-      background: var(--border-soft);
-    }
-    .activity-scroll::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 4px;
-    }
-    .activity-scroll table {
-      width: max-content;
-      min-width: 100%;
+    table.data {
+      width: 100%;
+      min-width: 640px;
       border-collapse: collapse;
       font-size: 13px;
     }
-    .activity-scroll th {
+    .data th {
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-dim);
+      color: var(--text-faint);
       text-align: left;
-      padding: 12px 22px;
+      padding: 10px 18px;
       border-bottom: 1px solid var(--border-soft);
-      background: transparent;
       white-space: nowrap;
     }
-    .activity-scroll td {
-      padding: 14px 22px;
+    .data td {
+      padding: 12px 18px;
       border-bottom: 1px solid var(--border-soft);
       vertical-align: middle;
       color: var(--text);
     }
-    .activity-scroll tr:last-child td { border-bottom: none; }
-    .activity-scroll td.time { color: var(--text-dimmer); font-variant-numeric: tabular-nums; width: 80px; }
-    .activity-scroll td.model { color: var(--text-dim); font-size: 12px; min-width: 140px; max-width: 200px; }
+    .data tr:last-child td { border-bottom: none; }
+    .data td.mono, .mono {
+      font-family: ui-monospace, 'SF Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .data td.dim { color: var(--text-muted); font-size: 12px; }
+    .data td.actions {
+      text-align: right;
+      white-space: nowrap;
+    }
+    .data td.actions .btn-sm { margin-left: 6px; }
 
     .empty {
-      padding: 32px 22px;
-      color: var(--text-dimmer);
+      padding: 36px 18px;
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
+      color: var(--text-faint);
     }
 
+    .msg { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+    .msg.err { color: var(--danger); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .pill-ok { background: var(--accent-dim); color: var(--accent); }
+    .pill-off { background: var(--elevated); color: var(--text-faint); }
+    .pill-warn { background: rgba(251, 191, 36, 0.12); color: var(--warn); }
+
+    .key-reveal {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      background: var(--accent-dim);
+      display: none;
+    }
+    .key-reveal.show { display: block; }
+    .key-reveal-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .key-reveal-value {
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      word-break: break-all;
+      margin-bottom: 10px;
+    }
+
+    /* Analytics */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .filters label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-faint);
+      margin-right: 4px;
+    }
+    .filter-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 700px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .kpi-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+    }
+    .kpi-hint {
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-top: 4px;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 800px) {
+      .chart-grid { grid-template-columns: 1fr; }
+    }
+    .chart-body {
+      padding: 14px 16px 18px;
+      min-height: 160px;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .bar-row span:first-child {
+      width: 72px;
+      flex-shrink: 0;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--border-soft);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #16a34a, #22c55e);
+      min-width: 2px;
+    }
+    .bar-fill.warn { background: linear-gradient(90deg, #ca8a04, #eab308); }
+    .bar-row span:last-child {
+      width: 48px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--text-faint);
+      font-size: 11px;
+    }
+
+    .banner-soft {
+      font-size: 12px;
+      color: var(--text-faint);
+      padding: 10px 14px;
+      background: var(--elevated);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px 22px 18px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .field {
+      margin-bottom: 14px;
+    }
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-faint);
+      margin-bottom: 6px;
+    }
+    .field-hint {
+      font-size: 11px;
+      color: var(--text-faint);
+      margin-top: 4px;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .dev-strip {
+      display: none;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+    }
+    .dev-strip.show { display: block; }
+    .api-snippet {
+      font-family: ui-monospace, 'SF Mono', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      background: #0a0a0a;
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 12px 14px;
+      overflow-x: auto;
+      white-space: pre;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="topbar">
+    <header class="topbar">
       <div class="topbar-left">
         <div class="brand">Kakapo</div>
-        <nav class="tabs" role="tablist" aria-label="Dashboard sections">
-          <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="analyse">Analyse</button>
-          <button type="button" class="tab" role="tab" aria-selected="false" data-tab="keys">Key management</button>
+        <nav class="tabs" role="tablist" aria-label="Dashboard">
+          <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="keys">Keys</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-tab="scopes">Scopes</button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-tab="analytics">Analytics</button>
         </nav>
       </div>
       <div class="topbar-right">
         <div class="status" id="status">
           <span class="status-dot"></span>
-          <span id="status-text">LIVE</span>
+          <span id="status-text">Live</span>
         </div>
         <button type="button" class="btn btn-sm" id="sign-out">Sign out</button>
       </div>
-    </div>
+    </header>
 
-    <section id="panel-analyse" class="tab-panel active" role="tabpanel" aria-hidden="false">
-    <div class="stats">
-      <div class="tile hero">
-        <div class="tile-label">Total saved this month</div>
-        <div class="tile-value" id="val-saved">$0.00</div>
-      </div>
-      <div class="tile spent">
-        <div class="tile-label">Total spent this month</div>
-        <div class="tile-value" id="val-spent">$0.00</div>
-      </div>
-      <div class="tile">
-        <div class="tile-label">Cache hit rate (MTD)</div>
-        <div class="tile-value" id="val-rate">0.0%</div>
-      </div>
-      <div class="tile">
-        <div class="tile-label">Requests this month</div>
-        <div class="tile-value" id="val-requests">0</div>
-      </div>
-    </div>
-    </section>
+    <p class="dev-strip" id="dev-strip" role="status">Sample data mode — the Python proxy is not called. Sign out to use a real session.</p>
 
-    <section id="panel-keys" class="tab-panel" role="tabpanel" aria-hidden="true">
-      <div class="keys-toolbar">
-        <h2>API keys</h2>
-        <button type="button" class="btn btn-primary btn-sm" id="btn-generate-key">Generate key</button>
+    <!-- Keys -->
+    <section id="panel-keys" class="tab-panel active" role="tabpanel" aria-labelledby="tab-keys">
+      <div class="panel-head">
+        <div>
+          <h1 class="panel-title">API keys</h1>
+          <p class="panel-desc">Create and revoke keys. Use a key from the table as <span class="mono">YOUR_KEY</span>.</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-open-create-key">Create key</button>
       </div>
-      <p class="keys-msg" id="keys-msg"></p>
-      <div class="activity-card">
-        <div class="activity-head"><div class="activity-title">Your keys</div></div>
-        <div class="activity-scroll">
-          <table>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-head">Query API (from your code)</div>
+        <div style="padding:14px 18px;">
+          <pre class="api-snippet" id="api-query-example"></pre>
+          <p class="field-hint" style="margin-top:10px;margin-bottom:0;">Omit <span class="mono">scopename</span> or <span class="mono">model</span> to use your gateway defaults.</p>
+        </div>
+      </div>
+      <p class="msg" id="keys-msg"></p>
+      <div class="toolbar" style="margin-bottom:12px;">
+        <input type="text" class="input-search" id="keys-filter" placeholder="Filter by label…" autocomplete="off" />
+      </div>
+      <div class="card">
+        <div class="card-head">Your keys</div>
+        <div class="scroll-x">
+          <table class="data">
             <thead>
               <tr>
                 <th>Label</th>
                 <th>Prefix</th>
-                <th>Created</th>
+                <th>Default scope</th>
+                <th>Last used</th>
+                <th>Status</th>
+                <th></th>
               </tr>
             </thead>
             <tbody id="keys-tbody">
-              <tr><td colspan="3" class="empty">Loading…</td></tr>
+              <tr><td colspan="6" class="empty">Loading…</td></tr>
             </tbody>
           </table>
         </div>
       </div>
       <div class="key-reveal" id="key-reveal">
-        <div class="key-reveal-label">Copy this key now</div>
+        <div class="key-reveal-label">Save this secret now</div>
         <div class="key-reveal-value" id="key-reveal-value"></div>
-        <button type="button" class="btn btn-primary btn-sm" id="key-reveal-copy">Copy</button>
+        <button type="button" class="btn btn-primary btn-sm" id="key-reveal-copy">Copy secret</button>
       </div>
     </section>
+
+    <!-- Scopes -->
+    <section id="panel-scopes" class="tab-panel" role="tabpanel" hidden>
+      <div class="panel-head">
+        <div>
+          <h1 class="panel-title">Scopes</h1>
+          <p class="panel-desc">Named scopes for <span class="mono">scopename</span>. Rate limits and budgets are rule-based: block, queue, or degrade when limits are hit.</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-open-scope">Add scope</button>
+      </div>
+      <p class="msg" id="scopes-msg"></p>
+      <div class="card">
+        <div class="card-head">Configured scopes</div>
+        <div class="scroll-x">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Requests / min</th>
+                <th>Token budget / day</th>
+                <th>On limit</th>
+                <th>Queue max wait</th>
+                <th>Models</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="scopes-tbody">
+              <tr><td colspan="7" class="empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analytics -->
+    <section id="panel-analytics" class="tab-panel" role="tabpanel" hidden>
+      <div class="panel-head">
+        <div>
+          <h1 class="panel-title">Analytics</h1>
+          <p class="panel-desc">Data covers the <strong>last 30 days</strong> (all scopes). The backend returns that bundle once when you open this tab; range and scope filters are applied in the browser.</p>
+        </div>
+      </div>
+      <div class="filters">
+        <div class="filter-group">
+          <label for="an-range">Range</label>
+          <select id="an-range">
+            <option value="24h">Last 24 hours</option>
+            <option value="7d" selected>Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="mtd">Month to date</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="an-scope">Scope</label>
+          <select id="an-scope">
+            <option value="">All scopes</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-sm btn-ghost" id="an-refresh">Refresh</button>
+      </div>
+      <div id="an-banner" class="banner-soft" style="display:none;"></div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Requests</div>
+          <div class="kpi-value" id="kpi-requests">—</div>
+          <div class="kpi-hint" id="kpi-requests-hint"></div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Tokens used</div>
+          <div class="kpi-value" id="kpi-tokens">—</div>
+          <div class="kpi-hint">Prompt + completion</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Est. spend</div>
+          <div class="kpi-value" id="kpi-spend">—</div>
+          <div class="kpi-hint">Gateway estimate</div>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <div class="card">
+          <div class="card-head">Requests by scope</div>
+          <div class="chart-body" id="chart-scopes"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">Rule actions (blocked / queued)</div>
+          <div class="chart-body" id="chart-rules"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">Breakdown by scope</div>
+        <div class="scroll-x">
+          <table class="data">
+            <thead>
+              <tr>
+                <th>Scope</th>
+                <th>Requests</th>
+                <th>Tokens used</th>
+                <th>Est. spend</th>
+                <th>Rule hits</th>
+              </tr>
+            </thead>
+            <tbody id="an-tbody">
+              <tr><td colspan="5" class="empty">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Create key modal -->
+  <div class="modal-backdrop" id="modal-key" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="mk-title">
+      <h3 id="mk-title">Create API key</h3>
+      <div class="field">
+        <label for="mk-label">Label</label>
+        <input type="text" id="mk-label" placeholder="e.g. CI, production worker" maxlength="120" />
+      </div>
+      <div class="field">
+        <label for="mk-scope">Default scope (optional)</label>
+        <select id="mk-scope"><option value="">— None —</option></select>
+        <div class="field-hint">Clients can still override per request with <span class="mono">scopename</span>.</div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-sm" id="mk-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="mk-submit">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scope modal -->
+  <div class="modal-backdrop" id="modal-scope" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="ms-title">
+      <h3 id="ms-title">Add scope</h3>
+      <div class="field">
+        <label for="ms-name">Scope name</label>
+        <input type="text" id="ms-name" placeholder="test, prod, staging…" maxlength="64" pattern="[a-zA-Z0-9._-]+" />
+        <div class="field-hint">Alphanumeric, dots, dashes, underscores.</div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="ms-rpm">Requests / minute</label>
+          <input type="number" id="ms-rpm" min="1" max="1000000" value="120" />
+        </div>
+        <div class="field">
+          <label for="ms-tokens">Token budget / day</label>
+          <input type="number" id="ms-tokens" min="0" step="1000" value="500000" />
+        </div>
+      </div>
+      <div class="field">
+        <label for="ms-policy">When limit is hit</label>
+        <select id="ms-policy">
+          <option value="block">Block (429)</option>
+          <option value="queue" selected>Queue (slow down)</option>
+          <option value="degrade">Degrade (route to fallback model)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="ms-wait">Queue max wait (seconds)</label>
+        <input type="number" id="ms-wait" min="1" max="3600" value="120" />
+        <div class="field-hint">Only applies when policy is Queue.</div>
+      </div>
+      <div class="field">
+        <label for="ms-models">Models</label>
+        <select id="ms-models">
+          <option value="all">All allowed org models</option>
+          <option value="cheap">Cheap tier only</option>
+          <option value="custom">Custom list (configure in API)</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-sm" id="ms-cancel">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="ms-submit">Save scope</button>
+      </div>
+    </div>
   </div>
 
   <script>
   (function () {
     var TOKEN_KEY = 'kakapo_auth_token';
-    if (!localStorage.getItem(TOKEN_KEY)) {
+    var SCOPES_LS = 'kakapo_scopes_v1';
+    var DEV_TOKEN = window.KAKAPO_DEV_SESSION_TOKEN || 'kakapo_local_dev_session';
+    var sessionToken = localStorage.getItem(TOKEN_KEY);
+    if (!sessionToken) {
       window.location.replace('login.html?next=dashboard.html');
       return;
     }
+    var useDevFixtures = sessionToken === DEV_TOKEN;
+
+    function installDevFetchMock() {
+      var base = (window.KAKAPO_API_BASE || '').replace(/\/$/, '');
+      var realFetch = window.fetch.bind(window);
+      function mockRes(obj, status) {
+        status = status || 200;
+        return Promise.resolve({
+          ok: status >= 200 && status < 400,
+          status: status,
+          json: function () {
+            if (status === 204) return Promise.resolve({});
+            return Promise.resolve(obj == null ? {} : obj);
+          },
+        });
+      }
+      function apiPath(url) {
+        if (typeof url !== 'string') return '';
+        if (base && url.indexOf(base) === 0) return url.slice(base.length) || '/';
+        try {
+          var u = new URL(url, window.location.origin);
+          return u.pathname + u.search;
+        } catch (e) {
+          return url;
+        }
+      }
+      function seedKeys() {
+        var raw = sessionStorage.getItem('kakapo_dev_keys');
+        if (raw) {
+          try {
+            var parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) return parsed;
+          } catch (e) { /* fall through */ }
+        }
+        var now = Date.now();
+        var keys = [
+          { id: 'key_dev_ci', label: 'CI — GitHub Actions', prefix: 'kk_ci_8a2f9c', default_scope: 'test', last_used_at: new Date(now - 55 * 60 * 1000).toISOString(), revoked: false },
+          { id: 'key_dev_worker', label: 'Production worker', prefix: 'kk_live_3m7k2', default_scope: 'prod', last_used_at: new Date(now - 4 * 60 * 1000).toISOString(), revoked: false },
+          { id: 'key_dev_staging', label: 'Staging deploy', prefix: 'kk_stg_9qx1', default_scope: 'staging', last_used_at: null, revoked: false },
+          { id: 'key_dev_revoked', label: 'Old integration (rotated)', prefix: 'kk_old_2p', default_scope: 'test', last_used_at: new Date(now - 86400000 * 14).toISOString(), revoked: true },
+        ];
+        sessionStorage.setItem('kakapo_dev_keys', JSON.stringify(keys));
+        return keys;
+      }
+
+      window.fetch = function (url, opts) {
+        opts = opts || {};
+        var path = apiPath(url);
+        var method = (opts.method || 'GET').toUpperCase();
+
+        if (path.split('?')[0] === '/api/dashboard/keys' && method === 'GET') {
+          return mockRes({ keys: seedKeys() });
+        }
+        if (path === '/api/dashboard/keys' && method === 'POST') {
+          try {
+            var body = opts.body ? JSON.parse(opts.body) : {};
+            var keys = seedKeys();
+            var nid = 'key_dev_' + Math.random().toString(36).slice(2, 11);
+            var prefix = 'kk_new_' + Math.random().toString(36).slice(2, 8);
+            keys.push({
+              id: nid,
+              label: body.label || 'New key',
+              prefix: prefix,
+              default_scope: body.default_scope || '',
+              last_used_at: null,
+              revoked: false,
+            });
+            sessionStorage.setItem('kakapo_dev_keys', JSON.stringify(keys));
+            return mockRes({
+              key: 'kk_dev_' + Math.random().toString(36).slice(2) + '_' + Math.random().toString(36).slice(2, 10),
+              id: nid,
+              prefix: prefix,
+            });
+          } catch (e) {
+            return mockRes({ detail: 'Invalid body' }, 400);
+          }
+        }
+        var delM = path.match(/^\/api\/dashboard\/keys\/([^/?#]+)/);
+        if (delM && method === 'DELETE') {
+          var rid = decodeURIComponent(delM[1]);
+          var nextKeys = seedKeys().filter(function (k) { return k.id !== rid; });
+          sessionStorage.setItem('kakapo_dev_keys', JSON.stringify(nextKeys));
+          return mockRes(null, 204);
+        }
+        if ((path.split('?')[0] === '/api/dashboard/analytics') && method === 'GET') {
+          var days = [];
+          var scopeNames = ['prod', 'staging', 'test', 'sandbox'];
+          for (var i = 0; i < 30; i++) {
+            var dt = new Date();
+            dt.setUTCDate(dt.getUTCDate() - i);
+            var y = dt.getUTCFullYear();
+            var mo = dt.getUTCMonth() + 1;
+            var da = dt.getUTCDate();
+            var ds = y + '-' + (mo < 10 ? '0' : '') + mo + '-' + (da < 10 ? '0' : '') + da;
+            var scopes = {};
+            var seed = (i + 1) * 17 + (da % 7);
+            scopeNames.forEach(function (sn, j) {
+              var w = (4 - j) / 6 + 0.15;
+              scopes[sn] = {
+                requests: Math.round(40 + seed * w * (1 + (j + i) % 3)),
+                tokens_used: Math.round((8000 + seed * 120) * w),
+                spend_usd_est: Math.round((0.15 + seed * 0.004) * w * 100) / 100,
+                rule_hits: Math.round((i % 5) + j),
+              };
+            });
+            days.push({ date: ds, scopes: scopes });
+          }
+          return mockRes({ days: days });
+        }
+        if (path.split('?')[0] === '/api/dashboard/scopes' && method === 'GET') {
+          return mockRes({ scopes: [] });
+        }
+        return realFetch(url, opts);
+      };
+    }
+
+    if (useDevFixtures) {
+      installDevFetchMock();
+      var devStrip = document.getElementById('dev-strip');
+      if (devStrip) devStrip.classList.add('show');
+    }
+
     function getAuthHeaders() {
       var t = localStorage.getItem(TOKEN_KEY);
       return t ? { Authorization: 'Bearer ' + t } : {};
@@ -395,81 +900,232 @@
     }
 
     document.getElementById('sign-out').addEventListener('click', function () {
+      if (localStorage.getItem(TOKEN_KEY) === DEV_TOKEN) {
+        try {
+          sessionStorage.removeItem('kakapo_dev_keys');
+        } catch (e) { /* ignore */ }
+      }
       localStorage.removeItem(TOKEN_KEY);
       window.location.href = 'login.html';
     });
 
-    var tabBtns = document.querySelectorAll('.tab');
-    var panelAnalyse = document.getElementById('panel-analyse');
-    var panelKeys = document.getElementById('panel-keys');
-    tabBtns.forEach(function (btn) {
+    (function fillApiQueryExample() {
+      var pre = document.getElementById('api-query-example');
+      if (!pre) return;
+      var b = (window.KAKAPO_API_BASE || '').replace(/\/$/, '');
+      pre.textContent =
+        'curl -X POST "' + b + '/v1/query" \\\n' +
+        '  -H "Authorization: Bearer YOUR_KEY" \\\n' +
+        '  -H "Content-Type: application/json" \\\n' +
+        '  -d \'{"query":"What is the capital of India?","scopename":"prod","model":"gemini-2.5-flash"}\'';
+    })();
+
+    /* ---------- Tabs ---------- */
+    var panels = {
+      keys: document.getElementById('panel-keys'),
+      scopes: document.getElementById('panel-scopes'),
+      analytics: document.getElementById('panel-analytics'),
+    };
+    document.querySelectorAll('.tab').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var id = btn.getAttribute('data-tab');
-        tabBtns.forEach(function (b) {
-          b.classList.toggle('active', b === btn);
-          b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+        document.querySelectorAll('.tab').forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
         });
-        panelAnalyse.classList.toggle('active', id === 'analyse');
-        panelKeys.classList.toggle('active', id === 'keys');
-        panelAnalyse.setAttribute('aria-hidden', id === 'analyse' ? 'false' : 'true');
-        panelKeys.setAttribute('aria-hidden', id === 'keys' ? 'false' : 'true');
+        Object.keys(panels).forEach(function (k) {
+          var show = k === id;
+          panels[k].classList.toggle('active', show);
+          panels[k].hidden = !show;
+        });
         if (id === 'keys') loadKeys();
+        if (id === 'scopes') loadScopesTable();
+        if (id === 'analytics') loadAnalyticsBundle(false);
       });
     });
 
+    /* ---------- Keys ---------- */
     var keysTbody = document.getElementById('keys-tbody');
     var keysMsg = document.getElementById('keys-msg');
     var keyReveal = document.getElementById('key-reveal');
     var keyRevealValue = document.getElementById('key-reveal-value');
+    var keysFilterEl = document.getElementById('keys-filter');
+    var keysCache = [];
 
     function setKeysMsg(text, isErr) {
       keysMsg.textContent = text || '';
       keysMsg.classList.toggle('err', !!isErr);
     }
 
-    async function loadKeys() {
+    function openModal(el) { el.classList.add('show'); el.setAttribute('aria-hidden', 'false'); }
+    function closeModal(el) { el.classList.remove('show'); el.setAttribute('aria-hidden', 'true'); }
+
+    function populateScopeSelects() {
+      var scopes = readScopesLocal();
+      ['mk-scope', 'an-scope'].forEach(function (id) {
+        var sel = document.getElementById(id);
+        var v = sel.value;
+        var first = sel.options[0];
+        sel.innerHTML = '';
+        sel.appendChild(first);
+        scopes.forEach(function (s) {
+          var o = document.createElement('option');
+          o.value = s.name;
+          o.textContent = s.name;
+          sel.appendChild(o);
+        });
+        if ([].some.call(sel.options, function (o) { return o.value === v; })) sel.value = v;
+      });
+    }
+
+    document.getElementById('btn-open-create-key').addEventListener('click', function () {
+      populateScopeSelects();
+      document.getElementById('mk-label').value = '';
+      document.getElementById('mk-scope').value = '';
+      openModal(document.getElementById('modal-key'));
+    });
+    document.getElementById('mk-cancel').addEventListener('click', function () {
+      closeModal(document.getElementById('modal-key'));
+    });
+    document.getElementById('modal-key').addEventListener('click', function (e) {
+      if (e.target === this) closeModal(this);
+    });
+
+    function renderKeysRow(k) {
+      var tr = document.createElement('tr');
+      var id = k.id || k.key_id || '';
+      var label = k.label || k.name || '—';
+      var prefix = k.prefix || k.key_prefix || (id ? String(id).slice(0, 10) + '…' : '—');
+      var defScope = k.default_scope != null && String(k.default_scope).length ? String(k.default_scope) : '—';
+      var lastUsed = k.last_used_at ? new Date(k.last_used_at).toLocaleString() : (k.last_used ? String(k.last_used) : '—');
+      var revoked = !!(k.revoked || k.status === 'revoked');
+      var td0 = document.createElement('td'); td0.textContent = label;
+      var td1 = document.createElement('td'); td1.className = 'mono'; td1.textContent = prefix;
+      var td2 = document.createElement('td'); td2.className = 'dim'; td2.textContent = defScope;
+      var td3 = document.createElement('td'); td3.className = 'dim'; td3.textContent = lastUsed;
+      var td4 = document.createElement('td');
+      var pill = document.createElement('span');
+      pill.className = revoked ? 'pill pill-off' : 'pill pill-ok';
+      pill.textContent = revoked ? 'Revoked' : 'Active';
+      td4.appendChild(pill);
+      var td5 = document.createElement('td'); td5.className = 'actions';
+      if (!revoked && id) {
+        var bRev = document.createElement('button');
+        bRev.type = 'button';
+        bRev.className = 'btn btn-sm btn-danger';
+        bRev.textContent = 'Revoke';
+        bRev.addEventListener('click', function () {
+          if (!confirm('Revoke this key? Traffic using it will fail immediately.')) return;
+          revokeKey(id);
+        });
+        td5.appendChild(bRev);
+      }
+      tr.appendChild(td0); tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4); tr.appendChild(td5);
+      return tr;
+    }
+
+    function filterKeysList() {
+      var q = (keysFilterEl.value || '').trim().toLowerCase();
+      keysTbody.innerHTML = '';
+      var list = keysCache.filter(function (k) {
+        var label = (k.label || k.name || '').toLowerCase();
+        return !q || label.indexOf(q) !== -1;
+      });
+      if (!list.length) {
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        td.colSpan = 6;
+        td.className = 'empty';
+        td.textContent = keysCache.length ? 'No keys match filter.' : 'No keys yet.';
+        tr.appendChild(td);
+        keysTbody.appendChild(tr);
+        return;
+      }
+      list.forEach(function (k) { keysTbody.appendChild(renderKeysRow(k)); });
+    }
+
+    async function revokeKey(id) {
       setKeysMsg('');
-      keysTbody.innerHTML = '<tr><td colspan="3" class="empty">Loading…</td></tr>';
       try {
-        var res = await authFetch(window.KAKAPO_API_BASE + '/api/keys', { method: 'GET', headers: {} });
-        if (!res.ok) throw new Error('bad status ' + res.status);
-        var data = await res.json();
-        var list = Array.isArray(data) ? data : (data.keys || data.items || []);
-        if (!list.length) {
-          keysTbody.innerHTML = '<tr><td colspan="3" class="empty">No keys yet. Generate one to use the API.</td></tr>';
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/keys/' + encodeURIComponent(id), { method: 'DELETE' });
+        if (res.status === 204 || res.status === 200) {
+          await loadKeys();
           return;
         }
-        keysTbody.innerHTML = list.map(function (k) {
-          var label = (k.label || k.name || '—').replace(/</g, '&lt;');
-          var prefix = (k.prefix || k.key_prefix || (k.id ? String(k.id).slice(0, 8) + '…' : '—')).replace(/</g, '&lt;');
-          var created = k.created_at ? new Date(k.created_at).toLocaleString() : (k.created || '—');
-          return '<tr><td>' + label + '</td><td class="model">' + prefix + '</td><td class="time">' + created + '</td></tr>';
-        }).join('');
+        var errBody = await res.json().catch(function () { return {}; });
+        var msg = typeof errBody.detail === 'string' ? errBody.detail : '';
+        if (res.status === 404) {
+          setKeysMsg(msg || 'Key not found.', true);
+          return;
+        }
+        if (res.status === 501) {
+          setKeysMsg(msg || 'Revoke is not implemented.', true);
+          return;
+        }
+        if (!res.ok) {
+          throw new Error(msg || 'HTTP ' + res.status);
+        }
+        await loadKeys();
       } catch (e) {
-        keysTbody.innerHTML = '<tr><td colspan="3" class="empty">Could not load keys.</td></tr>';
-        setKeysMsg(e.message || 'Failed to load keys', true);
+        setKeysMsg(e.message || 'Could not revoke key', true);
       }
     }
 
-    document.getElementById('btn-generate-key').addEventListener('click', async function () {
+    async function loadKeys() {
       setKeysMsg('');
-      keyReveal.classList.remove('show');
+      keysTbody.innerHTML = '';
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 6; td.className = 'empty'; td.textContent = 'Loading…';
+      tr.appendChild(td); keysTbody.appendChild(tr);
       try {
-        var res = await authFetch(window.KAKAPO_API_BASE + '/api/keys', {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/keys', { method: 'GET' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        if (!data || !Array.isArray(data.keys)) {
+          throw new Error('Response must be JSON { "keys": [ ... ] } per DASHBOARD_API.md');
+        }
+        keysCache = data.keys;
+        filterKeysList();
+      } catch (e) {
+        keysCache = [];
+        keysTbody.innerHTML = '';
+        var tr2 = document.createElement('tr');
+        var td2 = document.createElement('td');
+        td2.colSpan = 6; td2.className = 'empty';
+        td2.textContent = 'Could not load keys.';
+        tr2.appendChild(td2); keysTbody.appendChild(tr2);
+        setKeysMsg(e.message || 'Failed to load keys', true);
+      }
+    }
+    keysFilterEl.addEventListener('input', filterKeysList);
+
+    document.getElementById('mk-submit').addEventListener('click', async function () {
+      var label = document.getElementById('mk-label').value.trim();
+      var defScope = document.getElementById('mk-scope').value.trim();
+      setKeysMsg('');
+      var body = {};
+      if (label) body.label = label;
+      if (defScope) body.default_scope = defScope;
+      try {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/keys', {
           method: 'POST',
-          headers: {},
-          body: JSON.stringify({}),
+          body: JSON.stringify(body),
         });
         var data = await res.json().catch(function () { return {}; });
         if (!res.ok) {
-          setKeysMsg(data.detail || data.message || ('Could not create key (' + res.status + ')'), true);
+          setKeysMsg((typeof data.detail === 'string' && data.detail) ? data.detail : ('Could not create key (' + res.status + ')'), true);
           return;
         }
-        var secret = data.key || data.api_key || data.token || data.secret;
-        if (secret) {
-          keyRevealValue.textContent = secret;
-          keyReveal.classList.add('show');
+        var secret = data.key;
+        if (!secret) {
+          setKeysMsg('Response missing required field "key".', true);
+          return;
         }
+        keyRevealValue.textContent = secret;
+        keyReveal.classList.add('show');
+        closeModal(document.getElementById('modal-key'));
         await loadKeys();
       } catch (e) {
         setKeysMsg(e.message || 'Network error', true);
@@ -480,120 +1136,477 @@
       var t = keyRevealValue.textContent;
       if (!t) return;
       navigator.clipboard.writeText(t).then(function () {
-        setKeysMsg('Copied to clipboard.', false);
+        setKeysMsg('Secret copied.', false);
       }).catch(function () {
-        setKeysMsg('Copy failed — select the key and copy manually.', true);
+        setKeysMsg('Copy failed — select the secret manually.', true);
       });
     });
 
-    // =====================================================================
-    // MOCK /api/dashboard — set MOCK = true for local UI without backend.
-    // =====================================================================
-    const MOCK = false;
-    const mockState = { total_spent_usd: 0, total_saved_usd: 0, total_requests: 0, cache_hits: 0 };
-    function generateMockStats() {
-      const newCount = 1 + Math.floor(Math.random() * 2);
-      for (let i = 0; i < newCount; i++) {
-        const isHit = Math.random() < 0.38;
-        const tokens_in = 80 + Math.floor(Math.random() * 1600);
-        const tokens_out = 40 + Math.floor(Math.random() * 420);
-        const counterfactual = (tokens_in / 1e6) * 2.5 + (tokens_out / 1e6) * 10.0;
-        const cost = 0;
-        const saved = isHit ? counterfactual : counterfactual - cost;
-        mockState.total_requests += 1;
-        if (isHit) mockState.cache_hits += 1;
-        mockState.total_spent_usd += cost;
-        mockState.total_saved_usd += saved;
+    /* ---------- Scopes (local + optional API) ---------- */
+    function defaultScopes() {
+      if (useDevFixtures) {
+        return [
+          { id: 's_dev_test', name: 'test', rpm: 45, token_budget_daily: 150000, policy: 'queue', queue_max_wait_s: 90, models: 'cheap', source: 'local' },
+          { id: 's_dev_staging', name: 'staging', rpm: 200, token_budget_daily: 1200000, policy: 'queue', queue_max_wait_s: 180, models: 'all', source: 'local' },
+          { id: 's_dev_prod', name: 'prod', rpm: 900, token_budget_daily: 8000000, policy: 'block', queue_max_wait_s: 120, models: 'all', source: 'local' },
+          { id: 's_dev_sandbox', name: 'sandbox', rpm: 20, token_budget_daily: 80000, policy: 'block', queue_max_wait_s: 30, models: 'cheap', source: 'local' },
+        ];
       }
-      return {
-        total_spent_usd: mockState.total_spent_usd,
-        total_saved_usd: mockState.total_saved_usd,
-        cache_hit_rate: mockState.total_requests > 0 ? mockState.cache_hits / mockState.total_requests : 0,
-        total_requests: mockState.total_requests,
-      };
+      return [
+        { id: 's_demo_test', name: 'test', rpm: 30, token_budget_daily: 100000, policy: 'queue', queue_max_wait_s: 60, models: 'cheap', source: 'local' },
+        { id: 's_demo_prod', name: 'prod', rpm: 600, token_budget_daily: 5000000, policy: 'block', queue_max_wait_s: 120, models: 'all', source: 'local' },
+      ];
     }
-    if (MOCK) {
-      const realFetch = window.fetch.bind(window);
-      window.fetch = function (url, ...rest) {
-        if (typeof url === 'string' && url.indexOf('/api/dashboard') !== -1) {
-          return new Promise((res) =>
-            setTimeout(() => res({ ok: true, json: () => Promise.resolve(generateMockStats()) }), 40)
-          );
-        }
-        return realFetch(url, ...rest);
-      };
-    }
-
-    // =====================================================================
-    // Number tween
-    // =====================================================================
-    class NumberTween {
-      constructor(el, formatter) {
-        this.el = el;
-        this.formatter = formatter;
-        this.current = 0;
-        this.raf = null;
-      }
-      set(target, duration = 500) {
-        if (Math.abs(this.current - target) < 1e-9) return;
-        cancelAnimationFrame(this.raf);
-        const from = this.current;
-        const start = performance.now();
-        const step = (now) => {
-          const t = Math.min((now - start) / duration, 1);
-          const eased = 1 - Math.pow(1 - t, 3);
-          const v = from + (target - from) * eased;
-          this.el.textContent = this.formatter(v);
-          if (t < 1) this.raf = requestAnimationFrame(step);
-          else { this.current = target; this.el.textContent = this.formatter(target); }
-        };
-        this.raf = requestAnimationFrame(step);
-      }
-    }
-
-    const fmtMoney = (v) => '$' + v.toFixed(2);
-    const fmtPct = (v) => (v * 100).toFixed(1) + '%';
-    const fmtInt = (v) => Math.round(v).toLocaleString('en-US');
-
-    const tweens = {
-      saved: new NumberTween(document.getElementById('val-saved'), fmtMoney),
-      spent: new NumberTween(document.getElementById('val-spent'), fmtMoney),
-      rate:  new NumberTween(document.getElementById('val-rate'),  fmtPct),
-      reqs:  new NumberTween(document.getElementById('val-requests'), fmtInt),
-    };
-
-    // =====================================================================
-    // Polling
-    // =====================================================================
-    const statusEl = document.getElementById('status');
-    const statusText = document.getElementById('status-text');
-
-    async function pollOnce() {
+    function readScopesLocal() {
       try {
-        const res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard', {
-          cache: 'no-store',
-          headers: {},
-        });
-        if (!res.ok) throw new Error('bad status ' + res.status);
-        const s = await res.json();
-        applyStats(s);
-        statusEl.classList.remove('error');
-        statusText.textContent = 'LIVE';
+        var raw = localStorage.getItem(SCOPES_LS);
+        if (raw === null) return defaultScopes();
+        var arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : defaultScopes();
       } catch (e) {
+        return defaultScopes();
+      }
+    }
+    function writeScopesLocal(arr) {
+      localStorage.setItem(SCOPES_LS, JSON.stringify(arr));
+    }
+
+    var scopesMsg = document.getElementById('scopes-msg');
+    var scopesTbody = document.getElementById('scopes-tbody');
+
+    function setScopesMsg(t, err) {
+      scopesMsg.textContent = t || '';
+      scopesMsg.classList.toggle('err', !!err);
+    }
+
+    function policyLabel(p) {
+      if (p === 'queue') return 'Queue';
+      if (p === 'degrade') return 'Degrade';
+      return 'Block';
+    }
+
+    async function loadScopesTable() {
+      setScopesMsg('');
+      scopesTbody.innerHTML = '';
+      var tr = document.createElement('tr');
+      var td = document.createElement('td');
+      td.colSpan = 7; td.className = 'empty'; td.textContent = 'Loading…';
+      tr.appendChild(td); scopesTbody.appendChild(tr);
+
+      var merged = readScopesLocal();
+      try {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/scopes', { method: 'GET' });
+        if (res.ok) {
+          var data = await res.json();
+          if (data && Array.isArray(data.scopes) && data.scopes.length > 0) {
+            merged = data.scopes;
+          }
+        }
+      } catch (e) { /* keep local */ }
+
+      scopesTbody.innerHTML = '';
+      if (!merged.length) {
+        var tr2 = document.createElement('tr');
+        var td2 = document.createElement('td');
+        td2.colSpan = 7; td2.className = 'empty';
+        td2.textContent = 'No scopes. Add one to attach limits to scopename.';
+        tr2.appendChild(td2); scopesTbody.appendChild(tr2);
+        return;
+      }
+      merged.forEach(function (s) {
+        var tr = document.createElement('tr');
+        function cell(text, cls) {
+          var td = document.createElement('td');
+          if (cls) td.className = cls;
+          td.textContent = text;
+          return td;
+        }
+        tr.appendChild(cell(s.name));
+        tr.appendChild(cell(String(s.rpm)));
+        tr.appendChild(cell(String(s.token_budget_daily)));
+        tr.appendChild(cell(policyLabel(s.policy)));
+        var wait = s.policy === 'queue' ? String(s.queue_max_wait_s) + 's' : '—';
+        tr.appendChild(cell(wait, 'dim'));
+        tr.appendChild(cell(s.models === 'cheap' ? 'Cheap tier' : (s.models === 'custom' ? 'Custom' : 'All'), 'dim'));
+        var tdAct = document.createElement('td');
+        tdAct.className = 'actions';
+        if (s.source === 'local') {
+          var bDel = document.createElement('button');
+          bDel.type = 'button';
+          bDel.className = 'btn btn-sm btn-danger';
+          bDel.textContent = 'Remove';
+          bDel.addEventListener('click', function () {
+            if (!confirm('Remove scope "' + s.name + '" from this browser?')) return;
+            var next = readScopesLocal().filter(function (x) { return x.id !== s.id && x.name !== s.name; });
+            writeScopesLocal(next);
+            loadScopesTable();
+            populateScopeSelects();
+          });
+          tdAct.appendChild(bDel);
+        }
+        tr.appendChild(tdAct);
+        scopesTbody.appendChild(tr);
+      });
+      populateScopeSelects();
+    }
+
+    document.getElementById('btn-open-scope').addEventListener('click', function () {
+      document.getElementById('ms-name').value = '';
+      document.getElementById('ms-rpm').value = '120';
+      document.getElementById('ms-tokens').value = '500000';
+      document.getElementById('ms-policy').value = 'queue';
+      document.getElementById('ms-wait').value = '120';
+      document.getElementById('ms-models').value = 'all';
+      openModal(document.getElementById('modal-scope'));
+    });
+    document.getElementById('ms-cancel').addEventListener('click', function () {
+      closeModal(document.getElementById('modal-scope'));
+    });
+    document.getElementById('modal-scope').addEventListener('click', function (e) {
+      if (e.target === this) closeModal(this);
+    });
+
+    document.getElementById('ms-submit').addEventListener('click', async function () {
+      var name = document.getElementById('ms-name').value.trim();
+      if (!/^[a-zA-Z0-9._-]+$/.test(name)) {
+        setScopesMsg('Scope name: use letters, numbers, dot, dash, or underscore only.', true);
+        return;
+      }
+      var rpm = parseInt(document.getElementById('ms-rpm').value, 10) || 60;
+      var tokens = parseInt(document.getElementById('ms-tokens').value, 10);
+      if (tokens < 0) tokens = 0;
+      var policy = document.getElementById('ms-policy').value;
+      var wait = parseInt(document.getElementById('ms-wait').value, 10) || 120;
+      var models = document.getElementById('ms-models').value;
+      var row = {
+        id: 's_' + Math.random().toString(36).slice(2, 12),
+        name: name,
+        rpm: rpm,
+        token_budget_daily: tokens,
+        policy: policy,
+        queue_max_wait_s: wait,
+        models: models,
+        source: 'local',
+      };
+      setScopesMsg('');
+      try {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/scopes', {
+          method: 'POST',
+          body: JSON.stringify(row),
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (res.status === 201 && data && data.scope) {
+          closeModal(document.getElementById('modal-scope'));
+          await loadScopesTable();
+          return;
+        }
+        if (res.status === 501) {
+          /* fall through to local persistence */
+        } else if (!res.ok) {
+          setScopesMsg(typeof data.detail === 'string' && data.detail ? data.detail : 'HTTP ' + res.status, true);
+          return;
+        }
+      } catch (e) { /* fall through to local */ }
+
+      var list = readScopesLocal();
+      if (list.some(function (x) { return x.name === name; })) {
+        setScopesMsg('A scope with that name already exists.', true);
+        return;
+      }
+      list.push(row);
+      writeScopesLocal(list);
+      closeModal(document.getElementById('modal-scope'));
+      loadScopesTable();
+    });
+
+    /* ---------- Analytics (30-day bundle; filter client-side) ---------- */
+    var analyticsBundle = null;
+    var analyticsPointsFlat = [];
+    var analyticsBundleLoading = false;
+    var anBanner = document.getElementById('an-banner');
+
+    function fmtInt(n) {
+      if (n == null || isNaN(n)) return '—';
+      return Math.round(n).toLocaleString('en-US');
+    }
+    function fmtMoney(n) {
+      if (n == null || isNaN(n)) return '—';
+      return '$' + Number(n).toFixed(2);
+    }
+
+    function tokensUsedFromObject(o) {
+      if (!o) return 0;
+      if (o.tokens_used != null && !isNaN(Number(o.tokens_used))) return Number(o.tokens_used);
+      var a = o.tokens_in != null ? Number(o.tokens_in) : NaN;
+      var b = o.tokens_out != null ? Number(o.tokens_out) : NaN;
+      if (!isNaN(a) || !isNaN(b)) return (isNaN(a) ? 0 : a) + (isNaN(b) ? 0 : b);
+      return 0;
+    }
+
+    function flattenAnalyticsDays(data) {
+      var out = [];
+      if (!data || !Array.isArray(data.days)) return out;
+      data.days.forEach(function (d) {
+        var date = d.date ? String(d.date).slice(0, 10) : '';
+        if (!date) return;
+        var scopes = d.scopes || {};
+        Object.keys(scopes).forEach(function (name) {
+          var m = scopes[name] || {};
+          out.push({
+            date: date,
+            scope: name,
+            requests: Number(m.requests) || 0,
+            tokens_used: tokensUsedFromObject(m),
+            spend_usd_est: Number(m.spend_usd_est) || 0,
+            rule_hits: Number(m.rule_hits) || 0,
+          });
+        });
+      });
+      return out;
+    }
+
+    function ymdUTC(d) {
+      var y = d.getUTCFullYear();
+      var mo = d.getUTCMonth() + 1;
+      var day = d.getUTCDate();
+      return y + '-' + (mo < 10 ? '0' : '') + mo + '-' + (day < 10 ? '0' : '') + day;
+    }
+
+    function rangeToDateBounds(range) {
+      var end = new Date();
+      end.setUTCHours(0, 0, 0, 0);
+      var start = new Date(end);
+      if (range === '24h') {
+        start.setUTCDate(start.getUTCDate() - 1);
+      } else if (range === '7d') {
+        start.setUTCDate(start.getUTCDate() - 6);
+      } else if (range === '30d') {
+        start.setUTCDate(start.getUTCDate() - 29);
+      } else if (range === 'mtd') {
+        start = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), 1));
+      } else {
+        start.setUTCDate(start.getUTCDate() - 6);
+      }
+      return { start: ymdUTC(start), end: ymdUTC(end) };
+    }
+
+    function filterAnalyticsPoints(points, range, scopeSel, dataMin, dataMax) {
+      var b = rangeToDateBounds(range);
+      var start = b.start;
+      var end = b.end;
+      if (dataMin && start < dataMin) start = dataMin;
+      if (dataMax && end > dataMax) end = dataMax;
+      return points.filter(function (p) {
+        if (p.date < start || p.date > end) return false;
+        if (scopeSel && p.scope !== scopeSel) return false;
+        return true;
+      });
+    }
+
+    function aggregateTotals(filtered) {
+      var r = { requests: 0, tokens_used: 0, spend_usd_est: 0, rule_hits: 0 };
+      filtered.forEach(function (p) {
+        r.requests += p.requests;
+        r.tokens_used += p.tokens_used || 0;
+        r.spend_usd_est += p.spend_usd_est || 0;
+        r.rule_hits += p.rule_hits || 0;
+      });
+      return r;
+    }
+
+    function aggregateByScope(filtered) {
+      var map = {};
+      filtered.forEach(function (p) {
+        if (!map[p.scope]) {
+          map[p.scope] = { scope: p.scope, requests: 0, tokens_used: 0, spend_usd_est: 0, rule_hits: 0 };
+        }
+        map[p.scope].requests += p.requests;
+        map[p.scope].tokens_used += p.tokens_used || 0;
+        map[p.scope].spend_usd_est += p.spend_usd_est || 0;
+        map[p.scope].rule_hits += p.rule_hits || 0;
+      });
+      return Object.keys(map)
+        .map(function (k) {
+          return map[k];
+        })
+        .sort(function (a, b) {
+          return b.requests - a.requests;
+        });
+    }
+
+    function renderBarChart(container, rows, valueKey, labelKey, useWarn) {
+      container.innerHTML = '';
+      if (!rows || !rows.length) {
+        var p = document.createElement('p');
+        p.className = 'empty';
+        p.style.padding = '24px';
+        p.textContent = 'No breakdown for this range.';
+        container.appendChild(p);
+        return;
+      }
+      var nums = rows.map(function (r) {
+        return Number(r[valueKey]) || 0;
+      });
+      var max = Math.max.apply(null, nums.concat([1]));
+      rows.slice(0, 8).forEach(function (r) {
+        var val = Number(r[valueKey]) || 0;
+        var pct = Math.round((val / max) * 100);
+        var row = document.createElement('div');
+        row.className = 'bar-row';
+        var lab = document.createElement('span');
+        lab.textContent = String(r[labelKey] || '—');
+        var track = document.createElement('div');
+        track.className = 'bar-track';
+        var fill = document.createElement('div');
+        fill.className = 'bar-fill' + (useWarn && pct > 85 ? ' warn' : '');
+        fill.style.width = pct + '%';
+        track.appendChild(fill);
+        var num = document.createElement('span');
+        num.textContent = fmtInt(val);
+        row.appendChild(lab);
+        row.appendChild(track);
+        row.appendChild(num);
+        container.appendChild(row);
+      });
+    }
+
+    function renderAnalyticsFromBundle() {
+      var statusEl = document.getElementById('status');
+      var statusText = document.getElementById('status-text');
+      var range = document.getElementById('an-range').value;
+      var scopeSel = document.getElementById('an-scope').value;
+
+      if (analyticsBundleLoading) {
+        document.getElementById('kpi-requests').textContent = '—';
+        document.getElementById('kpi-requests-hint').textContent = 'Loading…';
+        document.getElementById('kpi-tokens').textContent = '—';
+        document.getElementById('kpi-spend').textContent = '—';
+        return;
+      }
+
+      if (!analyticsPointsFlat.length) {
+        document.getElementById('kpi-requests').textContent = '—';
+        document.getElementById('kpi-requests-hint').textContent = '';
+        document.getElementById('kpi-tokens').textContent = '—';
+        document.getElementById('kpi-spend').textContent = '—';
+        renderBarChart(document.getElementById('chart-scopes'), [], 'v', 'label', false);
+        renderBarChart(document.getElementById('chart-rules'), [], 'v', 'label', true);
+        var tbody = document.getElementById('an-tbody');
+        tbody.innerHTML = '';
+        var tr = document.createElement('tr');
+        var td = document.createElement('td');
+        td.colSpan = 5;
+        td.className = 'empty';
+        td.textContent = analyticsBundle ? 'No rows in `days` for this filter.' : 'Open this tab or press Refresh to load analytics.';
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+      }
+
+      var sortedDates = analyticsPointsFlat.map(function (p) {
+        return p.date;
+      }).sort();
+      var dataMin = sortedDates[0];
+      var dataMax = sortedDates[sortedDates.length - 1];
+      var filtered = filterAnalyticsPoints(analyticsPointsFlat, range, scopeSel, dataMin, dataMax);
+      var totals = aggregateTotals(filtered);
+      var rows = aggregateByScope(filtered);
+
+      document.getElementById('kpi-requests').textContent = fmtInt(totals.requests);
+      document.getElementById('kpi-requests-hint').textContent = 'Filtered in browser · data max 30 days';
+      document.getElementById('kpi-tokens').textContent = fmtInt(totals.tokens_used);
+      document.getElementById('kpi-spend').textContent = fmtMoney(totals.spend_usd_est);
+
+      var chartScopes = rows.map(function (r) {
+        return { label: r.scope, v: r.requests };
+      });
+      renderBarChart(document.getElementById('chart-scopes'), chartScopes, 'v', 'label', false);
+
+      var ruleRows = rows.map(function (r) {
+        return { label: r.scope, v: r.rule_hits != null ? r.rule_hits : 0 };
+      });
+      renderBarChart(document.getElementById('chart-rules'), ruleRows, 'v', 'label', true);
+
+      var tbody = document.getElementById('an-tbody');
+      tbody.innerHTML = '';
+      if (!rows.length) {
+        var tr0 = document.createElement('tr');
+        var td0 = document.createElement('td');
+        td0.colSpan = 5;
+        td0.className = 'empty';
+        td0.textContent = 'No data for this range / scope.';
+        tr0.appendChild(td0);
+        tbody.appendChild(tr0);
+      } else {
+        rows.forEach(function (r) {
+          var tr = document.createElement('tr');
+          function c(t, cls) {
+            var td = document.createElement('td');
+            if (cls) td.className = cls;
+            td.textContent = t;
+            return td;
+          }
+          tr.appendChild(c(r.scope || '—'));
+          tr.appendChild(c(fmtInt(r.requests)));
+          tr.appendChild(c(fmtInt(r.tokens_used), 'dim'));
+          tr.appendChild(c(fmtMoney(r.spend_usd_est), 'mono'));
+          tr.appendChild(c(fmtInt(r.rule_hits), 'dim'));
+          tbody.appendChild(tr);
+        });
+      }
+
+    }
+
+    async function loadAnalyticsBundle(force) {
+      if (analyticsBundleLoading) return;
+      if (!force && analyticsBundle) {
+        renderAnalyticsFromBundle();
+        return;
+      }
+      var statusEl = document.getElementById('status');
+      var statusText = document.getElementById('status-text');
+      analyticsBundleLoading = true;
+      anBanner.style.display = 'none';
+      renderAnalyticsFromBundle();
+      try {
+        var res = await authFetch(window.KAKAPO_API_BASE + '/api/dashboard/analytics', { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+        analyticsBundle = data;
+        analyticsPointsFlat = flattenAnalyticsDays(data);
+        if (!analyticsPointsFlat.length) {
+          anBanner.textContent =
+            'Expected GET /api/dashboard/analytics to return { "days": [ { "date": "YYYY-MM-DD", "scopes": { "prod": { "requests", "tokens_used", "spend_usd_est", "rule_hits" } } } ] } covering the last 30 days. See DASHBOARD_API.md.';
+          anBanner.style.display = 'block';
+        }
+        statusEl.classList.remove('error');
+        statusText.textContent = 'Live';
+      } catch (e) {
+        analyticsBundle = null;
+        analyticsPointsFlat = [];
         statusEl.classList.add('error');
-        statusText.textContent = 'OFFLINE';
+        statusText.textContent = 'Offline';
+        anBanner.textContent = e.message || 'Could not load analytics.';
+        anBanner.style.display = 'block';
+      } finally {
+        analyticsBundleLoading = false;
+        renderAnalyticsFromBundle();
       }
     }
 
-    function applyStats(s) {
-      tweens.saved.set(s.total_saved_usd || 0);
-      tweens.spent.set(s.total_spent_usd || 0);
-      tweens.rate.set(s.cache_hit_rate || 0);
-      tweens.reqs.set(s.total_requests || 0);
-    }
+    document.getElementById('an-refresh').addEventListener('click', function () {
+      loadAnalyticsBundle(true);
+    });
+    document.getElementById('an-range').addEventListener('change', function () {
+      renderAnalyticsFromBundle();
+    });
+    document.getElementById('an-scope').addEventListener('change', function () {
+      renderAnalyticsFromBundle();
+    });
 
-    pollOnce();
-    setInterval(pollOnce, 2000);
+    /* Initial */
+    populateScopeSelects();
+    loadKeys();
   })();
   </script>
 </body>

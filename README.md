@@ -35,12 +35,19 @@ Default if unset: `http://127.0.0.1:8000` (see `config.js`).
 
 ## Deploy
 
-Build has no compile step: upload `demo.html`, `dashboard.html`, and `config.js` to any static host (S3, Netlify, GitHub Pages). Set the API URL via `?api=` or `localStorage` for production backends.
+There is no required compile step for production: upload the HTML entrypoints, `config.js`, and static assets to any static host (S3, Netlify, GitHub Pages). At minimum include **`index.html`**, **`demo.html`**, **`login.html`**, **`dashboard.html`**, **`config.js`**, and the **`images/`** directory (referenced from `index.html`). Set the API URL via `?api=` or `localStorage` for production backends.
+
+`npm run build` (Vite) emits a **`dist/`** folder with the same pages if you prefer a packaged output; add your host’s rewrite rules if you need clean URLs.
 
 ## Repo layout
 
 | File | Role |
 |------|------|
 | `config.js` | Sets `window.KAKAPO_API_BASE` |
+| `index.html` | Landing page |
 | `demo.html` | Chat + iframe to `dashboard.html` |
-| `dashboard.html` | Auth + tabs; `GET /api/dashboard` (Bearer) returns month-to-date team stats (four numeric fields) |
+| `login.html` | Dashboard login; `POST /api/auth/login` |
+| `dashboard.html` | Keys / Scopes / Analytics; APIs under `/api/dashboard/…` |
+| `DASHBOARD_API.md` | HTTP contract for the dashboard and the static UI |
+| `DASHBOARD_DB.md` | Prescriptive DB shape for the proxy implementing those APIs |
+| `images/` | Static assets (e.g. thumbnails) |

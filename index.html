@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="dns-prefetch" href="https://platform.twitter.com" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -70,23 +71,80 @@
       background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     }
     .tweet-slot {
+      --tweet-card-r: 30px;
       width: 100%;
       max-width: 520px;
       display: flex;
       justify-content: center;
       justify-self: end;
-      padding: 10px;
+      padding: 22px 24px;
       border: 1px solid var(--line);
-      border-radius: 30px;
+      border-radius: var(--tweet-card-r);
       background: var(--panel);
       box-shadow: var(--shadow);
       backdrop-filter: blur(20px);
+      overflow: visible;
+    }
+    .tweet-stack {
+      position: relative;
+      width: 100%;
+      max-width: 550px;
+      margin-inline: auto;
+    }
+    .tweet-thumb-img {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: max(12px, calc(var(--tweet-card-r) - 8px));
+      vertical-align: top;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+    .tweet-embed-layer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      width: 100%;
+      min-height: 100%;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .tweet-slot.is-embed-ready .tweet-embed-layer {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .tweet-slot.is-embed-settled .tweet-thumb-img {
+      display: none;
+    }
+    .tweet-slot.is-embed-settled .tweet-embed-layer {
+      position: static;
+      min-height: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .tweet-embed-layer {
+        transition: none;
+      }
     }
     .twitter-tweet {
       margin: 0 auto !important;
     }
-    .tweet-slot iframe {
+    .tweet-embed-layer iframe {
       max-width: 100% !important;
+    }
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      min-width: 0;
     }
     .tagline {
       max-width: 34rem;
@@ -162,24 +220,39 @@
       .wrap { padding: 64px 18px 40px; overflow: visible; }
       .hero {
         grid-template-columns: 1fr;
+        justify-items: center;
         gap: 28px;
       }
       .divider { display: none; }
       .tweet-slot {
+        --tweet-card-r: 22px;
         max-width: 420px;
+        width: 100%;
         justify-self: center;
+        margin-inline: auto;
+        padding: 18px 20px;
+      }
+      .hero-copy {
+        align-items: center;
+        width: 100%;
+        max-width: 28rem;
       }
       .tagline {
         align-items: center;
         text-align: center;
         justify-self: center;
+        width: 100%;
       }
       .tagline-lead { font-size: clamp(2.8rem, 13vw, 4.2rem); }
-      .tweet-slot { border-radius: 22px; }
       .existing {
         flex-direction: column;
         border-radius: 22px;
         padding: 14px;
+        align-self: center;
+        margin-top: 24px;
+        width: 100%;
+        max-width: 320px;
+        box-sizing: border-box;
       }
     }
   </style>
@@ -191,13 +264,33 @@
 
   <main class="wrap">
     <div class="hero">
-      <div class="tweet-slot">
-        <blockquote class="twitter-tweet"><p lang="en" dir="ltr">You accidentally say &quot;Hello&quot; to Claude Opus 4.7 and it consumes 4% of your session limit. <a href="https://t.co/tlFzeHRfc1">pic.twitter.com/tlFzeHRfc1</a></p>&mdash; Noah (@NoahKingJr) <a href="https://twitter.com/NoahKingJr/status/2048825180517269814?ref_src=twsrc%5Etfw">April 27, 2026</a></blockquote>
+      <div class="tweet-slot" id="tweet-slot">
+        <div class="tweet-stack">
+          <img
+            class="tweet-thumb-img"
+            src="images/noah-opus-tweet-thumb.png"
+            alt=""
+            width="842"
+            height="1024"
+            decoding="async"
+            fetchpriority="high"
+          />
+          <div class="tweet-embed-layer">
+            <blockquote class="twitter-tweet" data-theme="dark" data-dnt="true">
+              <p lang="en" dir="ltr">
+                You accidentally say &quot;Hello&quot; to Claude Opus 4.7 and it consumes 4% of your session limit.
+                <a href="https://t.co/tlFzeHRfc1">pic.twitter.com/tlFzeHRfc1</a>
+              </p>
+              &mdash; Noah (@NoahKingJr)
+              <a href="https://twitter.com/NoahKingJr/status/2048825180517269814?ref_src=twsrc%5Etfw">April 27, 2026</a>
+            </blockquote>
+          </div>
+        </div>
       </div>
 
       <div class="divider" aria-hidden="true"></div>
 
-      <div>
+      <div class="hero-copy">
         <section class="tagline" aria-label="Kakapo pitch">
           <h1 class="tagline-lead">Stop wastage of tokens.</h1>
           <p class="tagline-sub">
@@ -214,6 +307,76 @@
     </div>
   </main>
 
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script>
+    window.twttr = (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = 'https://platform.twitter.com/widgets.js';
+      js.async = true;
+      fjs.parentNode.insertBefore(js, fjs);
+      t._e = [];
+      t.ready = function (f) {
+        t._e.push(f);
+      };
+      return t;
+    })(document, 'script', 'twitter-wjs');
+
+    (function () {
+      var slot = document.getElementById('tweet-slot');
+      if (!slot) return;
+
+      var fallbackTimer;
+      var layer = slot.querySelector('.tweet-embed-layer');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var revealStarted = false;
+
+      function settle() {
+        slot.classList.add('is-embed-settled');
+      }
+
+      function reveal() {
+        clearTimeout(fallbackTimer);
+        if (revealStarted) return;
+        revealStarted = true;
+        slot.classList.add('is-embed-ready');
+        if (!layer) {
+          settle();
+          return;
+        }
+        if (reduceMotion) {
+          settle();
+          return;
+        }
+        var finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          layer.removeEventListener('transitionend', onTransitionEnd);
+          settle();
+        }
+        function onTransitionEnd(e) {
+          if (e.target !== layer || e.propertyName !== 'opacity') return;
+          finish();
+        }
+        layer.addEventListener('transitionend', onTransitionEnd);
+        setTimeout(finish, 450);
+      }
+
+      fallbackTimer = setTimeout(reveal, 15000);
+
+      window.twttr.ready(function (twttr) {
+        twttr.events.bind('rendered', function (ev) {
+          if (!ev || !ev.target) return;
+          if (!slot.contains(ev.target)) return;
+          reveal();
+        });
+        twttr.widgets.load(slot);
+      });
+    })();
+  </script>
 </body>
 </html>
