@@ -7,7 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="config.js"></script>
+  <!-- Inlined so auth works even if /config.js is missing from the CDN bucket (keep in sync with config.js). -->
+  <script>
+(function () {
+  var q = new URLSearchParams(window.location.search).get('api');
+  var ls = localStorage.getItem('kakapo_api_base');
+  var defaultBase = 'https://kakapo-dev-alb-2083012355.ap-south-1.elb.amazonaws.com';
+  var base = (q || ls || defaultBase).replace(/\/$/, '');
+  window.KAKAPO_API_BASE = base;
+  if (q) localStorage.setItem('kakapo_api_base', base);
+  window.KAKAPO_DEV_SESSION_TOKEN = 'kakapo_local_dev_session';
+})();
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {

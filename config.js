@@ -2,6 +2,9 @@
  * API base for the Kakapo Python proxy (no trailing slash).
  * Default: dev ALB (HTTPS — required when this site is served over HTTPS, e.g. Amplify).
  * Local: ?api=http://127.0.0.1:8000  or  localStorage.setItem('kakapo_api_base', 'http://127.0.0.1:8000')
+ *
+ * The same bootstrap is inlined in login.html, dashboard.html, and demo.html so production
+ * works even when the static host does not serve /config.js. Change defaults in all four places.
  */
 (function () {
   var q = new URLSearchParams(window.location.search).get('api');
