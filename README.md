@@ -71,13 +71,13 @@ Do these in order so CloudFront has a working origin.
    - **Cache policy:** **CachingDisabled** (good for APIs).  
    - **Origin request policy:** start with **CORS-CustomOrigin** (managed). If OPTIONS or headers misbehave, try **AllViewer** while debugging.
 
-4. **Create distribution** and wait until status is **Deployed** (often 10–20+ minutes). Copy the **distribution domain**, e.g. `d111111abcdef8.cloudfront.net`.
+4. **Create distribution** and wait until status is **Deployed** (often 10–20+ minutes). Copy the **distribution domain** (this repo defaults to **`https://d3msaxyuekquhy.cloudfront.net`** — change all `defaultBase` copies if you replace the distribution).
 
 5. **Verify HTTPS to CloudFront**
 
    ```bash
    curl -sS -w "\nHTTP:%{http_code}\n" \
-     -X POST "https://d111111abcdef8.cloudfront.net/api/auth/login" \
+     -X POST "https://d3msaxyuekquhy.cloudfront.net/api/auth/login" \
      -H "Content-Type: application/json" \
      -d '{"username":"admin","password":"password"}'
    ```
@@ -86,16 +86,21 @@ Do these in order so CloudFront has a working origin.
 
 ## After CloudFront (frontend)
 
-The default API base in the repo is **`http://127.0.0.1:8000`** (local dev). For **HTTPS** hosting (e.g. Amplify), set the API to your **CloudFront HTTPS URL** (no trailing slash):
+The default **`defaultBase`** in **`config.js`**, **`login.html`**, **`dashboard.html`**, and **`demo.html`** is **`https://d3msaxyuekquhy.cloudfront.net`** (no trailing slash). Wait until the distribution status is **Deployed** before testing.
 
-- **Quick test in the browser** (on `login.html`): open DevTools → Console, run:
+**Local uvicorn:** open any app page with **`?api=http://127.0.0.1:8000`** once (stored in `localStorage`) or run:
 
-  ```javascript
-  localStorage.setItem('kakapo_api_base', 'https://YOUR_DISTRIBUTION.cloudfront.net');
-  location.reload();
-  ```
+```javascript
+localStorage.setItem('kakapo_api_base', 'http://127.0.0.1:8000');
+location.reload();
+```
 
-- **Permanent:** set the same URL as `defaultBase` in **`config.js`** and in the matching inline `<script>` at the top of **`login.html`**, **`dashboard.html`**, and **`demo.html`** (keep all four identical).
+**Different CloudFront URL:** update `defaultBase` in all four files above, or:
+
+```javascript
+localStorage.setItem('kakapo_api_base', 'https://YOUR_OTHER.cloudfront.net');
+location.reload();
+```
 
 **Auth:** `POST {KAKAPO_API_BASE}/api/auth/login` with JSON `username` / `password`.
 

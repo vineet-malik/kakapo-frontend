@@ -12,7 +12,7 @@
 (function () {
   var q = new URLSearchParams(window.location.search).get('api');
   var ls = localStorage.getItem('kakapo_api_base');
-  var defaultBase = 'http://127.0.0.1:8000';
+  var defaultBase = 'https://d3msaxyuekquhy.cloudfront.net';
   var base = (q || ls || defaultBase).replace(/\/$/, '');
   window.KAKAPO_API_BASE = base;
   if (q) localStorage.setItem('kakapo_api_base', base);
